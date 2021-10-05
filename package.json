@@ -1,0 +1,22 @@
+{
+  "name": "peronsal-kanban",
+  "version": "0.1.0",
+  "description": "UI to edit a kanban board for personal and life project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adrianlafond/peronsal-kanban.git"
+  },
+  "keywords": [
+    "kanban"
+  ],
+  "author": "Adrian Lafond <mail@adrianlafond.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/adrianlafond/peronsal-kanban/issues"
+  },
+  "homepage": "https://github.com/adrianlafond/peronsal-kanban#readme"
+}
