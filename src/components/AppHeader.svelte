@@ -1,5 +1,5 @@
 <script>
-	import FetchBoard from './FetchBoard.svelte'
+  import FetchBoard from './FetchBoard.svelte'
 </script>
 
 <div class="app-header">
