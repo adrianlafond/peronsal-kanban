@@ -25,6 +25,7 @@ export function loadFile(file: string) {
           loading: null,
           error: null,
         }))
+        localStorage.setItem('activeFile', file)
       })
     } else {
       boardFiles.update((files: BoardFiles): BoardFiles => ({

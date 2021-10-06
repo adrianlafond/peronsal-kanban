@@ -8,7 +8,7 @@ export interface BoardFiles {
 }
 
 export const boardFiles = writable<BoardFiles>({
-  activeFile: null,
+  activeFile: localStorage.getItem('activeFile') || null,
   loading: null,
   error: null,
 });
