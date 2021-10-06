@@ -1,12 +1,17 @@
 {
   "name": "peronsal-kanban",
   "version": "0.1.0",
+  "private": true,
   "description": "UI to edit a kanban board for personal and life project",
   "main": "index.js",
   "scripts": {
-    "start": "node server/index.js",
+    "server": "node server/index.js",
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "start": "sirv public --no-clear",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "ts-standard --fix"
+    "lint": "ts-standard --fix",
+    "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "repository": {
     "type": "git",
@@ -23,11 +28,24 @@
   "homepage": "https://github.com/adrianlafond/peronsal-kanban#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "sirv-cli": "^1.0.0"
   },
   "devDependencies": {
-    "concurrently": "^6.3.0",
+    "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-node-resolve": "^11.0.0",
+    "@rollup/plugin-typescript": "^8.0.0",
+    "@tsconfig/svelte": "^2.0.0",
+    "rollup": "^2.3.4",
+    "rollup-plugin-css-only": "^3.1.0",
+    "rollup-plugin-livereload": "^2.0.0",
+    "rollup-plugin-svelte": "^7.0.0",
+    "rollup-plugin-terser": "^7.0.0",
+    "svelte": "^3.0.0",
+    "svelte-check": "^2.0.0",
+    "svelte-preprocess": "^4.0.0",
     "ts-standard": "^10.0.0",
+    "tslib": "^2.0.0",
     "typescript": "^4.4.3"
   }
 }
