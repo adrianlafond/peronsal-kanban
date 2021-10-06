@@ -1,11 +1,11 @@
 import { BOARD_URL } from './endpoints'
-import { BoardFiles, boardFiles } from '../stores'
+import { board, Board, BoardFiles, boardFiles } from '../stores'
 
 /**
  * Loads a text file that is intended to be a markdown file in custom kanban format.
  */
 export function loadFile(file: string) {
-  boardFiles.update((files: BoardFiles) => ({ ...files, loading: true, error: null }))
+  boardFiles.update((files: BoardFiles) => ({ ...files, loading: file, error: null }))
   fetch(
     BOARD_URL,
     {
@@ -17,21 +17,27 @@ export function loadFile(file: string) {
     },
   ).then((response: Response) => {
     if (response.ok) {
-      response.text().then(file => {
-        boardFiles.update((files: BoardFiles) => ({ ...files, file, loading: false, error: null }))
+      response.text().then(markdown => {
+        board.update((board: Board) => ({ ...board, markdown }))
+        boardFiles.update((files: BoardFiles): BoardFiles => ({
+          ...files,
+          activeFile: file,
+          loading: null,
+          error: null,
+        }))
       })
     } else {
-      boardFiles.update((files: BoardFiles) => ({
+      boardFiles.update((files: BoardFiles): BoardFiles => ({
         ...files,
-        loading: false,
+        loading: null,
         error: 'An error occurred! File not found.',
       }))
     }
   }).catch((error: Error) => {
-    boardFiles.update((files: BoardFiles) => ({ ...files, loading: false, error: error.message }))
+    boardFiles.update((files: BoardFiles): BoardFiles => ({ ...files, loading: null, error: error.message }))
   })
 }
 
 export function resetFilesLoading() {
-  boardFiles.update((files: BoardFiles) => ({ ...files, loading: false, error: null }))
+  boardFiles.update((files: BoardFiles): BoardFiles => ({ ...files, loading: null, error: null }))
 }

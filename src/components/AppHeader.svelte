@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import FetchBoard from './FetchBoard.svelte'
 </script>
 

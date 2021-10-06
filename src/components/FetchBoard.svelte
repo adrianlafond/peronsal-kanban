@@ -50,7 +50,7 @@ import { onDestroy } from 'svelte';
 		<div class="fetch-board__align">
 			<p>{error}</p>
 			<div class="fetch-board__button">
-				<Button on:click={reset}>OK</Button>
+				<Button on:click={reset} size="field">OK</Button>
 			</div>
 		</div>
 	{:else if loading}
@@ -61,11 +61,11 @@ import { onDestroy } from 'svelte';
 			<p>Loading <em>{file}</em></p>
 		</div>
 	{:else if status === 'open' && !!file }
-		<Button on:click={openBoard} kind="tertiary">
+		<Button on:click={openBoard} size="field" kind="tertiary">
 			Change Board
 		</Button>
 	{:else if status === 'open' && !file }
-		<Button on:click={openBoard}>
+		<Button on:click={openBoard} size="field">
 			open Board
 		</Button>
 	{:else if status === 'input'}
@@ -73,16 +73,20 @@ import { onDestroy } from 'svelte';
 			<TextInput
 				value={file || ''}
 				autofocus
-				placeholder="Absolute path"
+				placeholder="/enter/an/absolute/path/to/kanban.md"
 				bind:ref={inputEl}
 				on:keydown={onInputKeydown}
 				on:input={onInput}
 			/>
 			<div class="fetch-board__button">
-				<Button class="personal-kanban__fetch-board-input-form-button" type="submit" disabled={!canLoad}>Load</Button>
+				<Button class="personal-kanban__fetch-board-input-form-button" size="field" type="submit" disabled={!canLoad}>
+					Load
+				</Button>
 			</div>
 			<div class="fetch-board__button">
-				<Button class="personal-kanban__fetch-board-input-form-button" on:click={reset} kind="tertiary">Cancel</Button>
+				<Button class="personal-kanban__fetch-board-input-form-button" size="field" on:click={reset} kind="tertiary">
+					Cancel
+				</Button>
 			</div>
 		</form>
 	{/if}

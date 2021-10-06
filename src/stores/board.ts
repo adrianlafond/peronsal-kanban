@@ -4,6 +4,6 @@ export interface Board {
   markdown: string;
 }
 
-export const boards = writable<Board>({
+export const board = writable<Board>({
   markdown: '# untitled'
 });

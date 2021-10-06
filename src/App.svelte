@@ -1,12 +1,24 @@
-<script lang="ts">
+<script>
+import { onDestroy } from 'svelte';
+
 	import AppHeader from './components/AppHeader.svelte'
-	export let name: string
+	import { board } from './stores'
+
+	export let name
+
+	let markdown = null
+	const unsubscribe = board.subscribe(data => {
+		markdown = data.markdown
+	})
+
+	onDestroy(unsubscribe)
 </script>
 
 <main>
 	<AppHeader />
 	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+
+	<pre>{markdown}</pre>
 </main>
 
 <style>
