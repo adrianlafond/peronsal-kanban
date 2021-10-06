@@ -1,16 +1,13 @@
 import { writable } from 'svelte/store';
 
-export interface Files {
-  active: number;
-  files: string[];
+// TODO: add files [] and activeFileIndex
+export interface BoardFiles {
   activeFile: string | null;
   loading: boolean;
   error: string | null;
 }
 
-export const files = writable<Files>({
-  active: 0,
-  files: [],
+export const boardFiles = writable<BoardFiles>({
   activeFile: null,
   loading: false,
   error: null,

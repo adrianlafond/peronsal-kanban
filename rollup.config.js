@@ -41,8 +41,6 @@ export default {
   plugins: [
     svelte({
       preprocess: [
-        sveltePreprocess.scss(),
-        sveltePreprocess.typescript(),
         sveltePreprocess({ sourceMap: !production }),
       ],
       compilerOptions: {

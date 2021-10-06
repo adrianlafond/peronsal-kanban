@@ -1,2 +1,2 @@
 export * from './board';
-export * from './files';
+export * from './board-files';

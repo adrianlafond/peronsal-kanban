@@ -1,11 +1,23 @@
 <script>
 	import { Button, TextInput, InlineLoading } from 'carbon-components-svelte'
-	import { files } from '../stores'
+	import { boardFiles } from '../stores'
+	import { loadFile, resetFilesLoading } from '../services'
+import { onDestroy } from 'svelte';
 
 	let status = 'open'
 	let canLoad = false
+	let inputEl
 
-	const { activeFile: file, loading, error } = $files
+	let file, loading, error
+	const unsubscribe = boardFiles.subscribe(files => {
+		file = files.activeFile
+		loading = files.loading
+		error = files.error
+		if (loading) {
+			status = 'open'
+		}
+	});
+	onDestroy(unsubscribe)
 
 	function openBoard() {
 		status = 'input'
@@ -21,27 +33,32 @@
 		canLoad = !!event.target.value
 	}
 
-	function loadBoard() {
-		console.log('load')
+	function loadBoard(event) {
+		loadFile(inputEl.value)
+		event.preventDefault()
+		return false
 	}
 
 	function reset() {
+		resetFilesLoading()
 		status = 'open'
 	}
 </script>
 
 <div class="fetch-board">
-	{#if loading}
+	{#if error}
+		<div class="fetch-board__align">
+			<p>{error}</p>
+			<div class="fetch-board__button">
+				<Button on:click={reset}>OK</Button>
+			</div>
+		</div>
+	{:else if loading}
 		<div class="fetch-board__align fetch-board__loading">
 			<div>
 				<InlineLoading />
 			</div>
 			<p>Loading <em>{file}</em></p>
-		</div>
-	{:else if error}
-		<div class="fetch-board__align">
-			<p>{error}</p>
-			<Button on:click={reset}>OK</Button>
 		</div>
 	{:else if status === 'open' && !!file }
 		<Button on:click={openBoard} kind="tertiary">
@@ -57,6 +74,7 @@
 				value={file || ''}
 				autofocus
 				placeholder="Absolute path"
+				bind:ref={inputEl}
 				on:keydown={onInputKeydown}
 				on:input={onInput}
 			/>
