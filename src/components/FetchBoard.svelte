@@ -2,7 +2,7 @@
   import { Button, TextInput, InlineLoading } from 'carbon-components-svelte'
   import { boardFiles } from '../stores'
   import { loadFile, resetFilesLoading } from '../services'
-import { onDestroy } from 'svelte';
+  import { onDestroy } from 'svelte';
 
   let status = 'open'
   let canLoad = false
@@ -13,6 +13,7 @@ import { onDestroy } from 'svelte';
     file = files.activeFile
     loading = files.loading
     error = files.error
+    canLoad = !!file
     if (loading) {
       status = 'open'
     }
