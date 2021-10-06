@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/adrianlafond/peronsal-kanban#readme",
   "dependencies": {
+    "@carbon/styles": "^0.6.0",
     "body-parser": "^1.19.0",
     "carbon-components-svelte": "^0.44.5",
     "carbon-icons-svelte": "^10.38.0",
@@ -38,6 +39,7 @@
     "@rollup/plugin-node-resolve": "^11.0.0",
     "@rollup/plugin-typescript": "^8.0.0",
     "@tsconfig/svelte": "^2.0.0",
+    "node-sass": "^6.0.1",
     "rollup": "^2.3.4",
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-livereload": "^2.0.0",
