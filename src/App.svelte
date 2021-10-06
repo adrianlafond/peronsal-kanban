@@ -1,10 +1,17 @@
 <script lang="ts">
-	export let name: string;
+	import { Button } from 'carbon-components-svelte'
+	export let name: string
+
+	function handleButtonClick(event: MouseEvent) {
+		console.log(event);
+	}
 </script>
 
 <main>
 	<h1>Hello {name}!</h1>
 	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+
+	<Button on:click={handleButtonClick}>Click</Button>
 </main>
 
 <style>
