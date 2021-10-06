@@ -27,6 +27,7 @@
   function onInputKeydown(event) {
     if (event.key === 'Escape') {
       reset();
+      event.preventDefault()
     }
   }
 
