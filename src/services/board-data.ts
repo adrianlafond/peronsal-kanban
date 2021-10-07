@@ -13,7 +13,7 @@ export interface Task {
   status: 'backlog' | 'todo' | 'doing' | 'done' | 'archive';
 }
 
-export function getDefaultBoard() {
+export function getDefaultBoard(): BoardData {
   return { title: 'Personal Kanban', projects: [] };
 }
 
