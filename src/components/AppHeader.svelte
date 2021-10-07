@@ -6,7 +6,7 @@ import { onDestroy } from 'svelte';
 
   let title = ''
   const unsubscribe = board.subscribe(boardData => {
-    title = boardData.data.title
+    document.title = title = boardData.data.title
   })
 
   onDestroy(unsubscribe)
