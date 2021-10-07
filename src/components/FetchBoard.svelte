@@ -96,7 +96,7 @@
 
 <style>
   .fetch-board {
-    flex-grow: 0.5;
+    flex-grow: 1;
     text-align: right;
   }
 

@@ -1,16 +1,32 @@
 <script>
+import { onDestroy } from 'svelte';
+
+  import { board } from '../stores'
   import FetchBoard from './FetchBoard.svelte'
+
+  let title = ''
+  const unsubscribe = board.subscribe(boardData => {
+    title = boardData.data.title
+  })
+
+  onDestroy(unsubscribe)
 </script>
 
 <div class="app-header">
+  <h3 class="app-header__title">{title}</h3>
   <FetchBoard />
 </div>
 
 <style>
 .app-header {
   width: 100%;
-  padding: 4px;
+  padding: 12px;
   display: flex;
   justify-content: flex-end;
+}
+
+.app-header__title {
+  flex-grow: 1;
+  margin-left: 12px;
 }
 </style>

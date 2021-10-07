@@ -36,6 +36,6 @@ export function toMarkdown(data: BoardData): string {
 
 // Non-exported utils to help convert markdown to BoardData.
 function getTitle(markdown: string) {
-  const titleMatch = markdown.match(/^\s*#\s+([\S\s]+)/)
+  const titleMatch = markdown.match(/^\s*#\s+([\S ]+)/)
   return titleMatch && titleMatch[1].trim();
 }

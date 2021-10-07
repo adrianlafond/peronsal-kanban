@@ -1,5 +1,6 @@
 import { BOARD_URL } from './endpoints'
 import { board, Board, BoardFiles, boardFiles } from '../stores'
+import { toBoardData } from '.'
 
 /**
  * Loads a text file that is intended to be a markdown file in custom kanban format.
@@ -18,7 +19,11 @@ export function loadFile(file: string) {
   ).then((response: Response) => {
     if (response.ok) {
       response.text().then(markdown => {
-        board.update((board: Board) => ({ ...board, markdown }))
+        board.update((board: Board) => ({
+          ...board,
+          markdown,
+          data: toBoardData(markdown),
+        }))
         boardFiles.update((files: BoardFiles): BoardFiles => ({
           ...files,
           activeFile: file,
