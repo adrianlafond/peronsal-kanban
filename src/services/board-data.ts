@@ -31,9 +31,10 @@ export function toBoardData(markdown: string): BoardData {
  * Converts a BoardData object into a markdown string.
  */
 export function toMarkdown(data: BoardData): string {
-  return ''
+  return `# ${data.title}`
 }
 
+// Non-exported utils to help convert markdown to BoardData.
 function getTitle(markdown: string) {
   const titleMatch = markdown.match(/^\s*#\s+([\S\s]+)/)
   return titleMatch && titleMatch[1].trim();

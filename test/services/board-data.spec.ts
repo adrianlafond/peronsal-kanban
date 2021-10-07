@@ -18,13 +18,13 @@ describe('toBoardData', () => {
     })
     it('returns the board title', () => {
       const md = `# title 99 $%^&`
-      expect(toBoardData(md).title).toEqual('title 99 $%^&')
+      expect(toBoardData(md).title).toBe('title 99 $%^&')
     })
     it('ignores whitespace when returning the board title', () => {
       const md = `
          #   title 99 $%^&
       `
-      expect(toBoardData(md).title).toEqual('title 99 $%^&')
+      expect(toBoardData(md).title).toBe('title 99 $%^&')
     })
   })
 })
@@ -32,5 +32,9 @@ describe('toBoardData', () => {
 describe('toMarkdown', () => {
   it('confirms that toMarkdown is defined', () => {
     expect(toMarkdown).toBeTruthy()
+  })
+  it('writes the title', () => {
+    const data = { title: 'title 99 $%^&', projects: [] }
+    expect(toBoardData(toMarkdown(data)).title).toBe('title 99 $%^&')
   })
 })
