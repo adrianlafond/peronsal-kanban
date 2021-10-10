@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { Accordion, AccordionItem } from 'carbon-components-svelte'
   import { onDestroy } from 'svelte'
   import Project from './Project.svelte'
   import Task from './Task.svelte'
@@ -42,6 +43,14 @@
 <div class="board-status">
   <h4>{getStatusTitle()}</h4>
   <div class="board-status__tiles" on:mousedown={onTilesMouseDown}>
+    <div>
+      <Accordion>
+        <AccordionItem open>
+          <h4 slot="title" class="accordion__item">Project Title</h4>
+          Task goes here
+        </AccordionItem>
+      </Accordion>
+    </div>
     {#each tasks as task}
       <Task task={task} />
     {/each}
@@ -58,5 +67,11 @@
 }
 .board-status__tiles {
   padding: 8px 8px 0 0;
+}
+
+.accordion__item {
+  background-color: rgba(255, 255, 0, 0.25);
+  padding: 0 16px;
+  margin: 0 16px 0 -16px;
 }
 </style>
