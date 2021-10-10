@@ -7,6 +7,7 @@ export interface BoardData {
 export interface Project {
   title: string;
   tasks: Task[];
+  color?: string;
 }
 
 export interface Task {
@@ -14,8 +15,25 @@ export interface Task {
   status: Status;
 }
 
-export const statuses = ['backlog', 'todo', 'doing', 'done', 'archive'];
+export const statuses = ['backlog', 'todo', 'doing', 'done', 'archive']
 export type Status = 'backlog' | 'todo' | 'doing' | 'done' | 'archive'
+
+export const colors = [
+  '#6929c4',
+  '#1192e8',
+  '#005d5d',
+  '#9f1853',
+  '#fa4d56',
+  '#570408',
+  '#198038',
+  '#002d9c',
+  '#ee538b',
+  '#b28600',
+  '#009d9a',
+  '#012749',
+  '#8a3800',
+  '#a56eff',
+]
 
 export function getDefaultBoard(): BoardData {
   return { title: 'Personal Kanban', projects: [], tasks: [] };
@@ -31,6 +49,7 @@ export function toBoardData(markdown: string): BoardData {
   let titleFound = false
   let project: BoardData | Project = data
   let status: Status = 'backlog'
+  let colorIndex = 0
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
@@ -75,6 +94,10 @@ export function toBoardData(markdown: string): BoardData {
       }
     }
   }
+
+  data.projects.forEach((project, index) => {
+    project.color = colors[index % data.projects.length]
+  })
 
   return data
 }

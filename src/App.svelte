@@ -1,24 +1,11 @@
 <script>
-import { onDestroy } from 'svelte';
-
   import AppHeader from './components/AppHeader.svelte'
-  import { board } from './stores'
-
-  export let name
-
-  let markdown = null
-  const unsubscribe = board.subscribe(data => {
-    markdown = data.markdown
-  })
-
-  onDestroy(unsubscribe)
+  import Board from './components/Board.svelte'
 </script>
 
 <main>
   <AppHeader />
-  <h1>Hello {name}!</h1>
-
-  <pre>{markdown}</pre>
+  <Board />
 </main>
 
 <style>

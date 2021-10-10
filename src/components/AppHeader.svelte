@@ -1,6 +1,5 @@
 <script>
-import { onDestroy } from 'svelte';
-
+  import { onDestroy } from 'svelte';
   import { board } from '../stores'
   import FetchBoard from './FetchBoard.svelte'
 
@@ -23,10 +22,10 @@ import { onDestroy } from 'svelte';
   padding: 12px;
   display: flex;
   justify-content: flex-end;
+  border-bottom: 1px dotted #8d8d8d;
 }
 
 .app-header__title {
   flex-grow: 1;
-  margin-left: 12px;
 }
 </style>

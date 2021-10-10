@@ -1,6 +1,6 @@
 import { BOARD_URL } from './endpoints'
 import { board, Board, BoardFiles, boardFiles } from '../stores'
-import { toBoardData } from '.'
+import { toBoardData } from './board-data'
 
 /**
  * Loads a text file that is intended to be a markdown file in custom kanban format.
