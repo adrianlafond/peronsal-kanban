@@ -46,7 +46,7 @@
     <div>
       <Accordion>
         <AccordionItem open>
-          <h4 slot="title" class="accordion__item">Project Title</h4>
+          <h5 slot="title" class="accordion__item">Project Title</h5>
           Task goes here
         </AccordionItem>
       </Accordion>
