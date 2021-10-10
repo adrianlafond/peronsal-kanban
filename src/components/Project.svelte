@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { AccordionItem } from 'carbon-components-svelte'
   import Task from './Task.svelte'
   import type { Project, Status} from '../services/board-data'
 
@@ -11,40 +12,24 @@
 </script>
 
 <div class="project">
-  {#if project.color}
-    <div class="project__background" style={style} />
-  {/if}
-  <div class="project__content">
-    <h5>{project.title}</h5>
+  <AccordionItem>
+    <h5 slot="title" class="project__title" style={style}>
+      {project.title}
+    </h5>
     {#each tasks as task}
       <Task task={task} />
     {/each}
-  </div>
+  </AccordionItem>
 </div>
 
 <style>
 .project {
   position: relative;
-  margin: 8px 0 0 0;
-  padding: 8px;
-  border: 1px solid #393939;
-  background-color: #262626;
-  cursor: default;
+  margin-bottom: 12px;
 }
-.project__dragging {
-  z-index: 1;
-}
-
-.project__background {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.25;
-}
-.project__content {
-  position: relative;
+.project__title {
+  padding: 0 16px;
+  margin: 0 16px 0 -16px;
 }
 </style>
 
