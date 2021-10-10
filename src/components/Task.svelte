@@ -1,5 +1,7 @@
-<script>
-  export let task
+<script lang="ts">
+  import type { Task } from '../services/board-data'
+
+  export let task: Task
 </script>
 
 <div class="task">

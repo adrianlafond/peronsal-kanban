@@ -1,10 +1,11 @@
-<script>
+<script lang="ts">
   import { onDestroy } from 'svelte'
-  import { Tile } from 'carbon-components-svelte'
   import Project from './Project.svelte'
+  import Task from './Task.svelte'
   import { board } from '../stores'
+  import type { Project as ProjectType, Task as TaskType, Status } from '../services/board-data';
 
-  export let status
+  export let status: Status
 
   function getStatusTitle() {
     switch (status) {
@@ -23,10 +24,10 @@
     }
   }
 
-  let tasks = []
-  let projects = []
+  let tasks: TaskType[] = []
+  let projects: ProjectType[] = []
 
-  function onTilesMouseDown(event) {
+  function onTilesMouseDown(event: MouseEvent) {
     console.log(event)
   }
 
@@ -41,8 +42,8 @@
 <div class="board-status">
   <h4>{getStatusTitle()}</h4>
   <div class="board-status__tiles" on:mousedown={onTilesMouseDown}>
-    {#each tasks as task, index}
-      <Tile data-task={index}>{task.title}</Tile>
+    {#each tasks as task}
+      <Task task={task} />
     {/each}
     {#each projects as project}
       <Project status={status} project={project} />

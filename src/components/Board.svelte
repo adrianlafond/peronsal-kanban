@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import BoardStatus from './BoardStatus.svelte'
 </script>
 

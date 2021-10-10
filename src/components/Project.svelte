@@ -1,8 +1,9 @@
-<script>
+<script lang="ts">
   import Task from './Task.svelte'
+  import type { Project, Status} from '../services/board-data'
 
-  export let project
-  export let status
+  export let project: Project
+  export let status: Status
 
   const tasks = project.tasks.filter(task => task.status === status)
 
@@ -29,6 +30,10 @@
   border: 1px solid #393939;
   background-color: #262626;
 }
+.project__dragging {
+  z-index: 1;
+}
+
 .project__background {
   position: absolute;
   left: 0;

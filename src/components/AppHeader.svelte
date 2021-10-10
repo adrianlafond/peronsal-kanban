@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onDestroy } from 'svelte';
   import { board } from '../stores'
   import FetchBoard from './FetchBoard.svelte'

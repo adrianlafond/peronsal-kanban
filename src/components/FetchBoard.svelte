@@ -1,14 +1,16 @@
-<script>
+<script lang="ts">
   import { Button, TextInput, InlineLoading } from 'carbon-components-svelte'
-  import { boardFiles } from '../stores'
+  import { boardFiles, BoardFiles } from '../stores'
   import { loadFile, resetFilesLoading } from '../services'
   import { onDestroy } from 'svelte';
 
   let status = 'open'
   let canLoad = false
-  let inputEl
+  let inputEl: HTMLInputElement
 
-  let file, loading, error
+  let file: BoardFiles['activeFile']
+  let loading: BoardFiles['loading']
+  let error: BoardFiles['error']
   const unsubscribe = boardFiles.subscribe(files => {
     file = files.activeFile
     loading = files.loading
@@ -24,18 +26,18 @@
     status = 'input'
   }
 
-  function onInputKeydown(event) {
+  function onInputKeydown(event: KeyboardEvent) {
     if (event.key === 'Escape') {
       reset();
       event.preventDefault()
     }
   }
 
-  function onInput(event) {
-    canLoad = !!event.target.value
+  function onInput(event: InputEvent) {
+    canLoad = !!(event.target as HTMLInputElement).value
   }
 
-  function loadBoard(event) {
+  function loadBoard(event: Event) {
     loadFile(inputEl.value)
     event.preventDefault()
     return false
