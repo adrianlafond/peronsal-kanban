@@ -29,6 +29,7 @@
   padding: 8px;
   border: 1px solid #393939;
   background-color: #262626;
+  cursor: default;
 }
 .project__dragging {
   z-index: 1;
