@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { AccordionItem } from 'carbon-components-svelte'
+  import { AccordionItem, UnorderedList } from 'carbon-components-svelte'
   import Task from './Task.svelte'
   import type { Project, Status} from '../services/board-data'
 
@@ -11,22 +11,20 @@
   const style = `background-color: ${project.color};`
 </script>
 
-<div class="project">
-  <AccordionItem>
+{#if tasks.length}
+  <AccordionItem open>
     <h5 slot="title" class="project__title" style={style}>
       {project.title}
     </h5>
+    <UnorderedList>
     {#each tasks as task}
       <Task task={task} />
     {/each}
+    </UnorderedList>
   </AccordionItem>
-</div>
+{/if}
 
 <style>
-.project {
-  position: relative;
-  margin-bottom: 12px;
-}
 .project__title {
   padding: 0 16px;
   margin: 0 16px 0 -16px;
