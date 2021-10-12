@@ -6,7 +6,7 @@
   export let task: Task
 
   function handleDragStart() {
-    console.log('dragStart');
+    console.log('dragStart')
   }
 </script>
 

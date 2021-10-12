@@ -36,20 +36,20 @@ export const colors = [
 ]
 
 export function getDefaultBoard(): BoardData {
-  return { title: 'Personal Kanban', projects: [], tasks: [] };
+  return { title: 'Personal Kanban', projects: [], tasks: [] }
 }
 
 /**
  * Converts custom kanban markdown into a BoardData object.
  */
 export function toBoardData(markdown: string): BoardData {
-  const data = getDefaultBoard();
+  const data = getDefaultBoard()
   const lines = markdown.replace('\r', '\n').split('\n')
 
   let titleFound = false
   let project: BoardData | Project = data
   let status: Status = 'backlog'
-  let colorIndex = 0
+  const colorIndex = 0
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
