@@ -1,7 +1,9 @@
-export interface BoardData {
+export const statuses = ['backlog', 'todo', 'doing', 'done', 'archive']
+export type Status = 'backlog' | 'todo' | 'doing' | 'done' | 'archive'
+
+export interface Task {
   title: string;
-  projects: Project[];
-  tasks: Task[];
+  status: Status;
 }
 
 export interface Project {
@@ -10,13 +12,11 @@ export interface Project {
   color?: string;
 }
 
-export interface Task {
+export interface BoardData {
   title: string;
-  status: Status;
+  projects: Project[];
+  tasks: Task[];
 }
-
-export const statuses = ['backlog', 'todo', 'doing', 'done', 'archive']
-export type Status = 'backlog' | 'todo' | 'doing' | 'done' | 'archive'
 
 export const colors = [
   '#6929c4',
@@ -49,7 +49,6 @@ export function toBoardData(markdown: string): BoardData {
   let titleFound = false
   let project: BoardData | Project = data
   let status: Status = 'backlog'
-  const colorIndex = 0
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
@@ -65,7 +64,7 @@ export function toBoardData(markdown: string): BoardData {
       }
     }
 
-    const taskMatch = line.match(/^[ ]*\-[ ]+([\S ]+)/)
+    const taskMatch = line.match(/^[ ]*-[ ]+([\S ]+)/)
     if (taskMatch) {
       project.tasks.push({
         title: taskMatch[1].trim(),

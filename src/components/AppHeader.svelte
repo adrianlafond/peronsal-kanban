@@ -1,11 +1,12 @@
 <script lang="ts">
-  import { onDestroy } from 'svelte';
+  import { onDestroy } from 'svelte'
   import { board } from '../stores'
   import FetchBoard from './FetchBoard.svelte'
 
   let title = ''
   const unsubscribe = board.subscribe(boardData => {
-    document.title = title = boardData.data.title
+    title = boardData.data.title
+    document.title = title
   })
 
   onDestroy(unsubscribe)

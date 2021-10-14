@@ -4,7 +4,7 @@
   import Project from './Project.svelte'
   import Task from './Task.svelte'
   import { board } from '../stores'
-  import type { Project as ProjectType, Task as TaskType, Status } from '../services/board-data';
+  import type { Project as ProjectType, Task as TaskType, Status } from '../services/board-data'
 
   export let status: Status
 
@@ -36,6 +36,7 @@
   onDestroy(unsubscribe)
 </script>
 
+<!-- svelte-ignore missing-declaration -->
 <div class="board-status">
   <h4>{getStatusTitle()}</h4>
   <div class="board-status__tiles">

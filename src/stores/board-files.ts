@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { writable } from 'svelte/store'
 
 // TODO: add files [] and activeFileIndex
 export interface BoardFiles {
@@ -11,4 +11,4 @@ export const boardFiles = writable<BoardFiles>({
   activeFile: localStorage.getItem('activeFile') || null,
   loading: null,
   error: null,
-});
+})

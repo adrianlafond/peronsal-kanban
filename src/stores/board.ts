@@ -1,5 +1,5 @@
-import { writable } from 'svelte/store';
-import { getDefaultBoard, BoardData } from '../services/board-data';
+import { writable } from 'svelte/store'
+import { getDefaultBoard, BoardData } from '../services/board-data'
 
 export interface Board {
   markdown: string;
@@ -9,4 +9,4 @@ export interface Board {
 export const board = writable<Board>({
   markdown: '# untitled',
   data: getDefaultBoard(),
-});
+})
