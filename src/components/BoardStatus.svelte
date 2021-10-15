@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { Accordion } from 'carbon-components-svelte'
   import { onDestroy } from 'svelte'
   import Project from './Project.svelte'
   import Task from './Task.svelte'
@@ -43,17 +42,15 @@
     {#each tasks as task}
       <Task task={task} />
     {/each}
-    <Accordion>
-      {#each projects as project}
-        <Project status={status} project={project} />
-      {/each}
-    </Accordion>
+    {#each projects as project}
+      <Project status={status} project={project} />
+    {/each}
   </div>
 </div>
 
 <style>
 .board-status {
-  flex-grow: 1;
+  flex: 1 1 0;
   min-width: 320px;
 }
 .board-status__tiles {

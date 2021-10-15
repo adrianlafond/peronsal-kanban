@@ -3,30 +3,31 @@ import commonjs from '@rollup/plugin-commonjs'
 import resolve from '@rollup/plugin-node-resolve'
 import livereload from 'rollup-plugin-livereload'
 import { terser } from 'rollup-plugin-terser'
+import injectProcessEnv from 'rollup-plugin-inject-process-env'
 import sveltePreprocess from 'svelte-preprocess'
 import typescript from '@rollup/plugin-typescript'
 import css from 'rollup-plugin-css-only'
 
 const production = !process.env.ROLLUP_WATCH
 
-function serve () {
+function serve() {
   let server
 
-  function toExit () {
+  function toExit() {
     if (server) server.kill(0)
   }
 
   return {
-    writeBundle () {
+    writeBundle() {
       if (server) return
       server = require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
         stdio: ['ignore', 'inherit', 'inherit'],
-        shell: true
+        shell: true,
       })
 
       process.on('SIGTERM', toExit)
       process.on('exit', toExit)
-    }
+    },
   }
 }
 
@@ -36,7 +37,7 @@ export default {
     sourcemap: true,
     format: 'iife',
     name: 'app',
-    file: 'public/build/bundle.js'
+    file: 'public/build/bundle.js',
   },
   plugins: [
     svelte({
@@ -45,8 +46,8 @@ export default {
       ],
       compilerOptions: {
         // enable run-time checks when not in production
-        dev: !production
-      }
+        dev: !production,
+      },
     }),
     // we'll extract any component CSS out into
     // a separate file - better for performance
@@ -59,12 +60,16 @@ export default {
     // https://github.com/rollup/plugins/tree/master/packages/commonjs
     resolve({
       browser: true,
-      dedupe: ['svelte']
+      dedupe: ['svelte'],
     }),
     commonjs(),
     typescript({
       sourceMap: !production,
-      inlineSources: !production
+      inlineSources: !production,
+    }),
+
+    injectProcessEnv({
+      NODE_ENV: production ? 'production' : 'development',
     }),
 
     // In dev mode, call `npm run start` once
@@ -77,9 +82,9 @@ export default {
 
     // If we're building for production (npm run build
     // instead of npm run dev), minify
-    production && terser()
+    production && terser(),
   ],
   watch: {
-    clearScreen: false
-  }
+    clearScreen: false,
+  },
 }
