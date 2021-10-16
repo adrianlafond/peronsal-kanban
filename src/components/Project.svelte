@@ -56,9 +56,9 @@
       {/if}
     </div>
     <UnorderedList>
-    {#each tasks as task}
-      <Task task={task} />
-    {/each}
+      {#each tasks as task (task.id)}
+        <Task task={task} project={project.title} />
+      {/each}
     </UnorderedList>
   </div>
 {/if}

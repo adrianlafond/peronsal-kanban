@@ -1,14 +1,18 @@
+import { Uid } from './uid'
+
 export type Status = 'backlog' | 'todo' | 'doing' | 'done' | 'archive'
 export const statuses = ['backlog', 'todo', 'doing', 'done', 'archive']
 
 export interface Task {
   title: string;
   status: Status;
+  id?: string;
 }
 
 export interface Project {
   title: string;
   tasks: Task[];
+  id?: string;
   color?: string;
 }
 
@@ -67,6 +71,7 @@ export function toBoardData(markdown: string): BoardData {
     const taskMatch = line.match(/^[ ]*-[ ]+([\S ]+)/)
     if (taskMatch) {
       project.tasks.push({
+        id: Uid.task,
         title: taskMatch[1].trim(),
         status,
       })
@@ -88,7 +93,7 @@ export function toBoardData(markdown: string): BoardData {
       if (foundProject) {
         project = foundProject
       } else {
-        project = { title: projectTitle, tasks: [] }
+        project = { id: Uid.project, title: projectTitle, tasks: [] }
         data.projects.push(project)
       }
     }
