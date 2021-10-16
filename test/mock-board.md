@@ -1,28 +1,41 @@
-# mock kanban
+# mock kanban ok
 
-## backlog
+## Backlog
 
-### Pets
+### Pets new name
+
 - feed the cats
 - feed the dogs
 
-## todo
+----------
 
-### Pets
+## To Do
+
+### Pets new name
+
 - take hamsters to vet
 - clean up litter box
 
-## doing
+----------
 
-### Pets
+## Doing
 
+### Pets new name
 
-## done
+----------
 
-### Pets
+## Done
+
+### Pets new name
+
 - clean up dog crap
 
-## archive
+----------
 
-### Pets
+## Archive
+
+### Pets new name
+
 - feed fish
+
+----------
