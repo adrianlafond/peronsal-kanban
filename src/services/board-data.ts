@@ -105,5 +105,9 @@ export function toBoardData(markdown: string): BoardData {
  * Converts a BoardData object into a markdown string.
  */
 export function toMarkdown(data: BoardData): string {
-  return `# ${data.title}`
+  const lines: string[] = []
+  lines.push(`# ${data.title}`)
+  lines.push('')
+
+  return lines.join('\n')
 }

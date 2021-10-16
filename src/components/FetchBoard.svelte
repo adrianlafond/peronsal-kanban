@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Button, TextInput, InlineLoading } from 'carbon-components-svelte'
   import { boardFiles, BoardFiles } from '../stores'
-  import { loadFile, resetFilesLoading } from '../services'
+  import { BoardFile } from '../services'
   import { onDestroy } from 'svelte';
 
   let status = 'open'
@@ -38,17 +38,18 @@
   }
 
   function loadBoard(event: Event) {
-    loadFile(inputEl.value)
+    BoardFile.read(inputEl.value)
     event.preventDefault()
     return false
   }
 
   function reset() {
-    resetFilesLoading()
+    BoardFile.resetLoading()
     status = 'open'
   }
 </script>
 
+<!-- svelte-ignore missing-declaration -->
 <div class="fetch-board">
   {#if error}
     <div class="fetch-board__align">

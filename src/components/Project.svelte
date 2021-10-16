@@ -3,6 +3,7 @@
   import Task from './Task.svelte'
   import type { Project, Status} from '../services/board-data'
   import { BoardModel } from '../services/board-model'
+  import { BoardFile } from '../services/board-file'
 
   export let project: Project
   export let status: Status
@@ -19,6 +20,7 @@
 
   function finishEditing() {
     editing = false
+    BoardFile.write()
   }
 
   function handleInput(event: Event) {
