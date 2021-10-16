@@ -65,7 +65,7 @@
 
 <style>
   .project {
-    margin-bottom: 16px;
+    margin: 16px 0;
   }
   .project__title {
     padding: 4px 16px;

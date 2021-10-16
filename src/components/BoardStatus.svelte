@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { UnorderedList } from 'carbon-components-svelte'
   import { onDestroy } from 'svelte'
   import Project from './Project.svelte'
   import Task from './Task.svelte'
@@ -39,9 +40,13 @@
 <div class="board-status">
   <h4>{getStatusTitle()}</h4>
   <div class="board-status__tiles">
-    {#each tasks as task}
-      <Task task={task} />
-    {/each}
+    {#if tasks.length}
+      <UnorderedList>
+        {#each tasks as task}
+          <Task task={task} />
+        {/each}
+      </UnorderedList>
+    {/if}
     {#each projects as project}
       <Project status={status} project={project} />
     {/each}
