@@ -8,30 +8,29 @@ export class BoardModel {
     }))
   }
 
-  static updateBoardTaskTitle(oldName: string, newName: string) {
+  static updateBoardTaskTitle(newName: string, id?: string) {
     board.update(data => produce(data, draft => {
-      const task = draft.data.tasks.find(task => task.title === oldName)
+      const task = draft.data.tasks.find(task => task.id === id)
       if (task) {
         task.title = newName
       }
     }))
   }
 
-  static updateProjectTitle(oldName: string, newName: string) {
+  static updateProjectTitle(newName: string, id?: string) {
     board.update(data => produce(data, draft => {
-      const project = draft.data.projects.find(project => project.title === oldName)
+      const project = draft.data.projects.find(project => project.id === id)
       if (project) {
         project.title = newName
       }
     }))
   }
 
-  static updateProjectTaskTitle(projectName: string, oldName: string, newName: string) {
+  static updateProjectTaskTitle(newName: string, projectId?: string, taskId?: string) {
     board.update(data => produce(data, draft => {
-      const project = draft.data.projects.find(project => project.title === projectName)
+      const project = draft.data.projects.find(project => project.id === projectId)
       if (project) {
-        const task = project.tasks.find(task => task.title === oldName)
-        console.log('updateProjectTaskTitle()', !!task, oldName, oldName.length, '|', project.tasks[0]?.title, project.tasks[0]?.title.length, '|', newName);
+        const task = project.tasks.find(task => task.id === taskId)
         if (task) {
           task.title = newName
         }

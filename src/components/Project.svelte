@@ -24,7 +24,7 @@
   }
 
   function handleInput(event: Event) {
-    BoardModel.updateProjectTitle(project.title, (event.target as HTMLInputElement).value || '')
+    BoardModel.updateProjectTitle((event.target as HTMLInputElement).value || '', project.id)
   }
 
   function handleSubmit(event: Event) {
@@ -57,7 +57,7 @@
     </div>
     <UnorderedList>
       {#each tasks as task (task.id)}
-        <Task task={task} project={project.title} />
+        <Task task={task} projectId={project.id} />
       {/each}
     </UnorderedList>
   </div>

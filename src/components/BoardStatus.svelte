@@ -31,10 +31,6 @@
   const unsubscribe = board.subscribe(boardData => {
     tasks = boardData.data.tasks.filter(task => task.status === status)
     projects = boardData.data.projects
-    if (status === 'backlog') {
-      console.log(tasks[0]?.title)
-      console.log(projects[0]?.tasks[0]?.title);
-    }
   })
 
   onDestroy(unsubscribe)

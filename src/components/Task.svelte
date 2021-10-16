@@ -8,8 +8,9 @@
   import Draggable from './Draggable.svelte'
 
   export let task: Task
-  export let project: string | null = null
+  export let projectId: string | null = null
 
+  let title = task.title
   let editing = false
 
   function makeEditable() {
@@ -23,11 +24,10 @@
 
   function handleInput(event: Event) {
     const newValue = (event.target as HTMLInputElement).value || ''
-    if (project) {
-      console.log('handleInput()', task.title)
-      BoardModel.updateProjectTaskTitle(project, task.title, newValue)
+    if (projectId) {
+      BoardModel.updateProjectTaskTitle(newValue, projectId, task.id)
     } else {
-      BoardModel.updateBoardTaskTitle(task.title, newValue)
+      BoardModel.updateBoardTaskTitle(newValue, task.id)
     }
   }
 
@@ -43,9 +43,9 @@
   }
 
   const unsubscribe = board.subscribe(boardData => {
-    if (project) {
+    if (projectId) {
       task = boardData.data.projects
-        .find(data => data.title === project)
+        .find(data => data.id === projectId)
         ?.tasks.find(data => data.id === task.id)
         || task
     } else {
