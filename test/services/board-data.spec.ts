@@ -1,5 +1,5 @@
-import { toBoardData, toMarkdown, getDefaultBoard, statuses } from '../../src/services'
-import { board } from '../../src/stores'
+import { to_number } from 'svelte/internal'
+import { toBoardData, toMarkdown, getDefaultBoard, statuses, Status } from '../../src/services'
 
 describe('toBoardData', () => {
   it('confirms that toBoardData is defined', () => {
@@ -7,10 +7,10 @@ describe('toBoardData', () => {
   })
 
   describe('title', () => {
-    it(`returns a default title if no title is present`, () => {
+    it('returns a default title if no title is present', () => {
       expect(toBoardData('').title).toBe(getDefaultBoard().title)
     })
-    it(`returns a default title if no title exists with one "#"`, () => {
+    it('returns a default title if no title exists with one "#"', () => {
       const md = `
         ## wrong title
         ### again wrong title
@@ -18,7 +18,7 @@ describe('toBoardData', () => {
       expect(toBoardData(md).title).toBe(getDefaultBoard().title)
     })
     it('returns the board title', () => {
-      const md = `# #title 99 $%^&`
+      const md = '# #title 99 $%^&'
       expect(toBoardData(md).title).toBe('#title 99 $%^&')
     })
     it('ignores whitespace when returning the board title', () => {
@@ -43,7 +43,7 @@ describe('toBoardData', () => {
       expect(boardData.tasks[0].status).toEqual('backlog')
     })
     describe('projects', () => {
-      it(`finds board-level projects`, () => {
+      it('finds board-level projects', () => {
         const md = `
         ### abcdefg
       `
@@ -99,7 +99,7 @@ describe('toBoardData', () => {
         expect(boardData.projects[0].tasks[1].status).toBe(status)
       })
     })
-    it(`captures all projects and tasks when status is duplicated`, () => {
+    it('captures all projects and tasks when status is duplicated', () => {
       const md = `
         ## To do
         ### project-title
@@ -119,7 +119,7 @@ describe('toBoardData', () => {
       expect(boardData.projects[0].tasks[1].title).toBe('task B')
       expect(boardData.projects[0].tasks[1].status).toBe('todo')
     })
-    it(`captures all projects and tasks when project is duplicated`, () => {
+    it('captures all projects and tasks when project is duplicated', () => {
       const md = `
         ## todo
         ### project-title
@@ -137,7 +137,7 @@ describe('toBoardData', () => {
       expect(boardData.projects[0].tasks[1].title).toBe('task B')
       expect(boardData.projects[0].tasks[1].status).toBe('todo')
     })
-    it(`allows duplicate tasks (because user wishes to rename a task later)`, () => {
+    it('allows duplicate tasks (because user wishes to rename a task later)', () => {
       const md = `
         ## todo
         ### project-title
@@ -154,7 +154,7 @@ describe('toBoardData', () => {
       expect(boardData.projects[0].tasks[1].title).toBe('task A')
       expect(boardData.projects[0].tasks[1].status).toBe('todo')
     })
-    it(`captures tasks mixed between projects, status, and board levels`, () => {
+    it('captures tasks mixed between projects, status, and board levels', () => {
       const md = `
         - task D
         ### project A
@@ -196,5 +196,32 @@ describe('toMarkdown', () => {
   it('writes the title', () => {
     const data = { title: '#title 99 $%^&', projects: [], tasks: [] }
     expect(toBoardData(toMarkdown(data)).title).toBe('#title 99 $%^&')
+  })
+  statuses.forEach(status => {
+    it(`writes project-level tasks to status ${status}`, () => {
+      const input = {
+        title: 'A',
+        projects: [],
+        tasks: [{ title: 'B', status: status as Status }],
+      }
+      const output = toBoardData(toMarkdown(input))
+      expect(output.tasks.length).toBe(1)
+      expect(output.tasks[0].title).toBe('B')
+      expect(output.tasks[0].status).toBe(status)
+    })
+    it(`writes projects and project tasks to status ${status}`, () => {
+      const input = {
+        title: 'A',
+        projects: [{ title: 'B', tasks: [{ title: 'C', status: status as Status }]}],
+        tasks: [],
+      }
+      const output = toBoardData(toMarkdown(input))
+      expect(output.tasks.length).toBe(0)
+      expect(output.projects.length).toBe(1)
+      expect(output.projects[0].title).toBe('B')
+      expect(output.projects[0].tasks.length).toBe(1)
+      expect(output.projects[0].tasks[0].title).toBe('C')
+      expect(output.projects[0].tasks[0].status).toBe(status)
+    })
   })
 })

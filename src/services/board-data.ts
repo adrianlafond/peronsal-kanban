@@ -1,5 +1,5 @@
-export const statuses = ['backlog', 'todo', 'doing', 'done', 'archive']
 export type Status = 'backlog' | 'todo' | 'doing' | 'done' | 'archive'
+export const statuses = ['backlog', 'todo', 'doing', 'done', 'archive']
 
 export interface Task {
   title: string;
@@ -106,8 +106,77 @@ export function toBoardData(markdown: string): BoardData {
  */
 export function toMarkdown(data: BoardData): string {
   const lines: string[] = []
-  lines.push(`# ${data.title}`)
-  lines.push('')
+  appendHeading(lines, data.title)
+
+  const projectTasks: { [key in Status]: string[] } = {
+    backlog: [],
+    todo: [],
+    doing: [],
+    done: [],
+    archive: [],
+  }
+
+  data.tasks.forEach(task => {
+    projectTasks[task.status].push(task.title)
+  })
+
+  appendHeading(lines, 'Backlog', 2)
+  appendTasks(lines, projectTasks.backlog)
+  appendProjects(lines, data.projects, 'backlog')
+  appendHorizontalRule(lines)
+
+  appendHeading(lines, 'To Do', 2)
+  appendTasks(lines, projectTasks.todo)
+  appendProjects(lines, data.projects, 'todo')
+  appendHorizontalRule(lines)
+
+  appendHeading(lines, 'Doing', 2)
+  appendTasks(lines, projectTasks.doing)
+  appendProjects(lines, data.projects, 'doing')
+  appendHorizontalRule(lines)
+
+  appendHeading(lines, 'Done', 2)
+  appendTasks(lines, projectTasks.done)
+  appendProjects(lines, data.projects, 'done')
+  appendHorizontalRule(lines)
+
+  appendHeading(lines, 'Archive', 2)
+  appendTasks(lines, projectTasks.archive)
+  appendProjects(lines, data.projects, 'archive')
+  appendHorizontalRule(lines)
 
   return lines.join('\n')
+}
+
+function appendTasks(lines: string[], tasks: string[]) {
+  if (tasks.length) {
+    tasks.forEach(task => {
+      lines.push(`- ${task}`)
+    })
+    lines.push('')
+  }
+}
+
+function appendProjects(lines: string[], projects: Project[], status: Status) {
+  projects.forEach(project => {
+    appendHeading(lines, project.title, 3)
+    appendTasks(lines, project.tasks
+      .filter(task => task.status === status)
+      .map(task => task.title))
+  })
+}
+
+function appendHeading(lines: string[], status: string, level = 1) {
+  let h = ''
+  while (level > 0) {
+    h += '#'
+    level -= 1
+  }
+  lines.push(`${h} ${status}`)
+  lines.push('')
+}
+
+function appendHorizontalRule(lines: string[]) {
+  lines.push('----------')
+  lines.push('')
 }
