@@ -94,17 +94,15 @@
     </div>
   </div>
   {#if adding}
-    <div class="board-status__add-item">
-      <Form on:submit={submitNewItem}>
-        <TextInput
-          labelText={`New ${adding}`}
-          placeholder="title"
-          name="new-item"
-          autofocus
-          on:blur={endAdding}
-        />
-      </Form>
-    </div>
+    <Form on:submit={submitNewItem}>
+      <TextInput
+        labelText={`New ${adding}`}
+        placeholder="title"
+        name="new-item"
+        autofocus
+        on:blur={endAdding}
+      />
+    </Form>
   {/if}
   <div class="board-status__tiles">
     {#if tasks.length}

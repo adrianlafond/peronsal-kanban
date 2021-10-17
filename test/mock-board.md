@@ -8,6 +8,9 @@
 
 ### house plants
 
+- this time?
+- ok again
+- ok ok
 - new task
 
 ### take care of pets
@@ -32,6 +35,12 @@
 
 ### house plants X
 
+- now?
+- maybe?
+- let's try this
+- well?
+- this is my new task
+- water the plants
 - new task
 
 ### house plants
