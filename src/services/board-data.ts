@@ -1,43 +1,8 @@
 import { Uid } from './uid'
+import type { Status, Project, BoardData } from './board-types'
+import { getProjectColor } from './color'
 
-export type Status = 'backlog' | 'todo' | 'doing' | 'done' | 'archive'
 export const statuses = ['backlog', 'todo', 'doing', 'done', 'archive']
-
-export interface Task {
-  title: string;
-  status: Status;
-  id?: string;
-}
-
-export interface Project {
-  title: string;
-  tasks: Task[];
-  id?: string;
-  color?: string;
-}
-
-export interface BoardData {
-  title: string;
-  projects: Project[];
-  tasks: Task[];
-}
-
-export const colors = [
-  '#6929c4',
-  '#1192e8',
-  '#005d5d',
-  '#9f1853',
-  '#fa4d56',
-  '#570408',
-  '#198038',
-  '#002d9c',
-  '#ee538b',
-  '#b28600',
-  '#009d9a',
-  '#012749',
-  '#8a3800',
-  '#a56eff',
-]
 
 export function getDefaultBoard(): BoardData {
   return { title: 'Personal Kanban', projects: [], tasks: [] }
@@ -100,7 +65,7 @@ export function toBoardData(markdown: string): BoardData {
   }
 
   data.projects.forEach((project, index) => {
-    project.color = colors[index % data.projects.length]
+    project.color = getProjectColor()
   })
 
   return data

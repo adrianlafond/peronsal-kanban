@@ -1,5 +1,10 @@
-import { to_number } from 'svelte/internal'
-import { toBoardData, toMarkdown, getDefaultBoard, statuses, Status } from '../../src/services'
+import {
+  toBoardData,
+  toMarkdown,
+  getDefaultBoard,
+  statuses,
+  Status,
+} from '../../src/services'
 
 describe('toBoardData', () => {
   it('confirms that toBoardData is defined', () => {

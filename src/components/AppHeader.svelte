@@ -39,7 +39,6 @@
     <div class="app-header__title-edit">
       <Form on:submit={handleSubmit}>
         <TextInput
-          autofocus
           value={title}
           on:input={handleInput}
           on:blur={finishEditing}

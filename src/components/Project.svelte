@@ -1,9 +1,7 @@
 <script lang="ts">
   import { Form, TextInput, UnorderedList } from 'carbon-components-svelte'
   import Task from './Task.svelte'
-  import type { Project, Status} from '../services/board-data'
-  import { BoardModel } from '../services/board-model'
-  import { BoardFile } from '../services/board-file'
+  import { Project, Status, BoardModel, BoardFile } from '../services'
 
   export let project: Project
   export let status: Status
@@ -12,14 +10,7 @@
 
   const style = `background-color: ${project.color};`
 
-  let editing = false
-
-  function makeEditable() {
-    editing = true
-  }
-
-  function finishEditing() {
-    editing = false
+  function endEditing() {
     BoardFile.write()
   }
 
@@ -45,10 +36,9 @@
       <div class="project__title-edit">
         <Form on:submit={handleSubmit}>
           <TextInput
-            autofocus
             value={project.title}
             on:input={handleInput}
-            on:blur={finishEditing}
+            on:blur={endEditing}
             name="project-title"
           />
         </Form>
@@ -68,8 +58,8 @@
   }
   .project__title {
     position: relative;
-    padding: 4px 16px;
-    margin: 0 16px 4px -16px;
+    padding: 4px 0;
+    margin: 0 0 4px 0;
   }
   .project__title-display {
     position: absolute;

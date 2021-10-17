@@ -1,16 +1,14 @@
 <script lang="ts">
   import { onDestroy } from 'svelte'
   import { ListItem, Form, TextInput } from 'carbon-components-svelte'
-  import type { Task } from '../services/board-data'
-  import { BoardModel } from '../services/board-model'
-  import { BoardFile } from '../services/board-file'
+  import { Task, BoardModel, BoardFile } from '../services'
   import { board } from '../stores'
   import Draggable from './Draggable.svelte'
 
   export let task: Task
   export let projectId: string | null = null
 
-  function finishEditing() {
+  function endEditing() {
     BoardFile.write()
   }
 
@@ -57,16 +55,15 @@
 <Draggable on:dragStart={handleDragStart}>
   <ListItem>
     <div class="task__title">
-      <div class="task__title-display">
+      <div class={`task__title-display${projectId ? ' task__title-display--project': ''}`}>
         {task.title}
       </div>
       <div class="task__title-edit">
         <Form on:submit={handleSubmit}>
           <TextInput
-            autofocus
             value={task.title}
             on:input={handleInput}
-            on:blur={finishEditing}
+            on:blur={endEditing}
             name="task-title"
             size="sm"
           />
@@ -78,7 +75,6 @@
 
 <style>
   .task__title {
-    padding: 0 16px 0 0;
     position: relative;
   }
   .task__title-display {
@@ -88,8 +84,11 @@
     height: 2rem; /* matches TextInput SM height */
     line-height: 2;
   }
+  .task__title-display--project {
+    margin-left: 16px;
+  }
   .task__title-edit {
-    margin-left: -16px;
+    margin-left: 0;
     opacity: 0;
   }
   .task__title-edit:focus-within {

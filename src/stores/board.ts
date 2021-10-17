@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store'
-import { getDefaultBoard, BoardData } from '../services/board-data'
+import type { BoardData } from '../services/board-types'
+import { getDefaultBoard } from '../services/board-data'
 
 export interface Board {
   markdown: string;

@@ -1,43 +1,61 @@
-# mock kanban
+# Personal Kanban
 
 ## Backlog
 
-- hey wait this works?
+- pet the dog
 
-### Pets RENAMEDF
+### house plants X
 
-- feed da cATx
-- feed the DAWGZ
+### house plants
+
+- new task
+
+### take care of pets
+
+- feed the dog
 
 ----------
 
 ## To Do
 
-### Pets RENAMEDF
+### house plants X
 
-- take hamsters to vet
-- clean up litter box
+### house plants
+
+### take care of pets
 
 ----------
 
 ## Doing
 
-### Pets RENAMEDF
+- doing the doo
+
+### house plants X
+
+- new task
+
+### house plants
+
+### take care of pets
 
 ----------
 
 ## Done
 
-### Pets RENAMEDF
+### house plants X
 
-- clean up dog crap
+### house plants
+
+### take care of pets
 
 ----------
 
 ## Archive
 
-### Pets RENAMEDF
+### house plants X
 
-- feed fish
+### house plants
+
+### take care of pets
 
 ----------

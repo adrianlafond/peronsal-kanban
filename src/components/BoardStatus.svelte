@@ -1,10 +1,13 @@
 <script lang="ts">
-  import { UnorderedList } from 'carbon-components-svelte'
+  import { Form, Button, TextInput, UnorderedList } from 'carbon-components-svelte'
+  import DocumentAdd20 from 'carbon-icons-svelte/lib/DocumentAdd20'
+  import FolderAdd20 from 'carbon-icons-svelte/lib/FolderAdd20'
   import { onDestroy } from 'svelte'
   import Project from './Project.svelte'
   import Task from './Task.svelte'
   import { board } from '../stores'
-  import type { Project as ProjectType, Task as TaskType, Status } from '../services/board-data'
+  import { BoardModel } from '../services/board-model'
+  import type { Project as ProjectType, Task as TaskType, Status } from '../services/board-types'
 
   export let status: Status
 
@@ -27,6 +30,39 @@
 
   let tasks: TaskType[] = []
   let projects: ProjectType[] = []
+  let adding: 'task' | 'project' | null = null
+
+  function addNewTask() {
+    adding = 'task'
+  }
+
+  function addNewProject() {
+    adding = 'project'
+  }
+
+  function endAdding(event: Event) {
+    const input = event.target as HTMLInputElement
+    saveNewItem(input.value)
+    input.value = ''
+    adding = null
+  }
+
+  function submitNewItem(event: Event) {
+    const form = event.target as HTMLFormElement
+    const input = form.querySelector('input[name=new-item]') as HTMLInputElement
+    input.blur()
+    event.preventDefault()
+  }
+
+  function saveNewItem(value: string) {
+    if (value) {
+      if (adding === 'task') {
+        BoardModel.addTask(value, status)
+      } else if (adding === 'project') {
+        BoardModel.addProject(value, status)
+      }
+    }
+  }
 
   const unsubscribe = board.subscribe(boardData => {
     tasks = boardData.data.tasks.filter(task => task.status === status)
@@ -38,7 +74,38 @@
 
 <!-- svelte-ignore missing-declaration -->
 <div class="board-status">
-  <h4>{getStatusTitle()}</h4>
+  <div class="board-status__title">
+    <h4 class="board-status__title-display">{getStatusTitle()}</h4>
+    <div>
+      <Button
+        on:click={addNewTask}
+        icon={DocumentAdd20}
+        iconDescription="Add new task"
+        size="small"
+        kind="ghost"
+      />
+      <Button
+        on:click={addNewProject}
+        icon={FolderAdd20}
+        iconDescription="Add new project"
+        size="small"
+        kind="ghost"
+      />
+    </div>
+  </div>
+  {#if adding}
+    <div class="board-status__add-item">
+      <Form on:submit={submitNewItem}>
+        <TextInput
+          labelText={`New ${adding}`}
+          placeholder="title"
+          name="new-item"
+          autofocus
+          on:blur={endAdding}
+        />
+      </Form>
+    </div>
+  {/if}
   <div class="board-status__tiles">
     {#if tasks.length}
       <UnorderedList>
@@ -57,6 +124,13 @@
 .board-status {
   flex: 1 1 0;
   min-width: 320px;
+  padding-right: 16px;
+}
+.board-status__title {
+  display: flex;
+}
+.board-status__title-display {
+  flex-grow: 1;
 }
 .board-status__tiles {
   padding: 8px 8px 0 0;

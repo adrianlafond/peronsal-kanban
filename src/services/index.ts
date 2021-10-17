@@ -1,4 +1,6 @@
+export * from './board-types'
 export * from './board-file'
 export * from './board-data'
 export * from './board-model'
+export * from './color'
 export * from './uid'
