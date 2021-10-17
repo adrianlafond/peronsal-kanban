@@ -39,7 +39,10 @@
 {#if tasks.length}
   <div class="project">
     <div class="project__title" style={style}>
-      {#if editing}
+      <h5 class="project__title-display">
+        {project.title}
+      </h5>
+      <div class="project__title-edit">
         <Form on:submit={handleSubmit}>
           <TextInput
             autofocus
@@ -49,11 +52,7 @@
             name="project-title"
           />
         </Form>
-      {:else}
-        <h5 on:dblclick={makeEditable} class="project__title-display">
-          {project.title}
-        </h5>
-      {/if}
+      </div>
     </div>
     <UnorderedList>
       {#each tasks as task (task.id)}
@@ -68,14 +67,22 @@
     margin: 16px 0;
   }
   .project__title {
+    position: relative;
     padding: 4px 16px;
     margin: 0 16px 4px -16px;
   }
   .project__title-display {
-    cursor: default;
-    user-select: none;
+    position: absolute;
+    left: 16px;
+    top: 4px;
     height: 2.5rem; /* matches TextInput height */
     line-height: 2.5;
+  }
+  .project__title-edit {
+    opacity: 0;
+  }
+  .project__title-edit:focus-within {
+    opacity: 1;
   }
 </style>
 

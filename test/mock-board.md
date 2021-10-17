@@ -1,4 +1,4 @@
-# mock kanban ok
+# mock kanban
 
 ## Backlog
 
@@ -7,7 +7,7 @@
 ### Pets RENAMEDF
 
 - feed da cATx
-- feed the dogs
+- feed the DAWGZ
 
 ----------
 

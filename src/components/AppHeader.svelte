@@ -6,14 +6,8 @@
   import FetchBoard from './FetchBoard.svelte'
 
   let title = ''
-  let editing = false
-
-  function makeEditable() {
-    editing = true
-  }
 
   function finishEditing() {
-    editing = false
     BoardFile.write()
   }
 
@@ -39,7 +33,10 @@
 <!-- svelte-ignore missing-declaration -->
 <div class="app-header">
   <div class="app-header__title">
-    {#if editing}
+    <h3 class="app-header__title-display">
+      {title}
+    </h3>
+    <div class="app-header__title-edit">
       <Form on:submit={handleSubmit}>
         <TextInput
           autofocus
@@ -50,11 +47,7 @@
           size="xl"
         />
       </Form>
-    {:else}
-      <h3 on:dblclick={makeEditable} class="app-header__title-display">
-        {title}
-      </h3>
-    {/if}
+    </div>
   </div>
   <FetchBoard />
 </div>
@@ -69,11 +62,19 @@
 }
 .app-header__title {
   flex-grow: 1;
+  position: relative;
 }
 .app-header__title-display {
-  cursor: default;
-  user-select: none;
+  position: absolute;
+  left: 0;
+  top: 0;
   height: 3rem; /* matches TextInput XL height */
   line-height: 1.5;
+}
+.app-header__title-edit {
+  opacity: 0;
+}
+.app-header__title-edit:focus-within {
+  opacity: 1;
 }
 </style>

@@ -10,15 +10,7 @@
   export let task: Task
   export let projectId: string | null = null
 
-  let title = task.title
-  let editing = false
-
-  function makeEditable() {
-    editing = true
-  }
-
   function finishEditing() {
-    editing = false
     BoardFile.write()
   }
 
@@ -65,24 +57,21 @@
 <Draggable on:dragStart={handleDragStart}>
   <ListItem>
     <div class="task__title">
-      {#if editing}
-        <div class="task__title-form">
-          <Form on:submit={handleSubmit}>
-            <TextInput
-              autofocus
-              value={task.title}
-              on:input={handleInput}
-              on:blur={finishEditing}
-              name="task-title"
-              size="sm"
-            />
-          </Form>
-        </div>
-      {:else}
-        <div on:dblclick={makeEditable} class="task__title-display">
-          {task.title}
-        </div>
-      {/if}
+      <div class="task__title-display">
+        {task.title}
+      </div>
+      <div class="task__title-edit">
+        <Form on:submit={handleSubmit}>
+          <TextInput
+            autofocus
+            value={task.title}
+            on:input={handleInput}
+            on:blur={finishEditing}
+            name="task-title"
+            size="sm"
+          />
+        </Form>
+      </div>
     </div>
   </ListItem>
 </Draggable>
@@ -90,14 +79,20 @@
 <style>
   .task__title {
     padding: 0 16px 0 0;
-  }
-  .task__title-form {
-    margin-left: -16px;
+    position: relative;
   }
   .task__title-display {
-    cursor: default;
-    user-select: none;
+    position: absolute;
+    left: 0;
+    top: 0;
     height: 2rem; /* matches TextInput SM height */
     line-height: 2;
+  }
+  .task__title-edit {
+    margin-left: -16px;
+    opacity: 0;
+  }
+  .task__title-edit:focus-within {
+    opacity: 1;
   }
 </style>
