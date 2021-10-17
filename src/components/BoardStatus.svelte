@@ -13,8 +13,6 @@
 
   function getStatusTitle() {
     switch (status) {
-      case 'backlog':
-        return 'Backlog'
       case 'todo':
         return 'To Do'
       case 'doing':
@@ -24,7 +22,7 @@
       case 'archive':
         return 'Archive'
       default:
-        return 'Backlog'
+        return 'To Do'
     }
   }
 

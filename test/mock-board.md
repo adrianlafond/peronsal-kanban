@@ -1,6 +1,6 @@
 # Personal Kanban
 
-## Backlog
+## To Do
 
 - pet the dog
 
@@ -16,16 +16,6 @@
 ### take care of pets
 
 - feed the dog
-
-----------
-
-## To Do
-
-### house plants X
-
-### house plants
-
-### take care of pets
 
 ----------
 

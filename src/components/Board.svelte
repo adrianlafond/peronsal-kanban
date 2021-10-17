@@ -3,7 +3,6 @@
 </script>
 
 <div class="board">
-  <BoardStatus status="backlog" />
   <BoardStatus status="todo" />
   <BoardStatus status="doing" />
   <BoardStatus status="done" />

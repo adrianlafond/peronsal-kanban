@@ -2,7 +2,7 @@ import { Uid } from './uid'
 import type { Status, Project, BoardData } from './board-types'
 import { getProjectColor } from './color'
 
-export const statuses = ['backlog', 'todo', 'doing', 'done', 'archive']
+export const statuses = ['todo', 'doing', 'done', 'archive']
 
 export function getDefaultBoard(): BoardData {
   return { title: 'Personal Kanban', projects: [], tasks: [] }
@@ -17,7 +17,7 @@ export function toBoardData(markdown: string): BoardData {
 
   let titleFound = false
   let project: BoardData | Project = data
-  let status: Status = 'backlog'
+  let status: Status = 'todo'
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
@@ -28,7 +28,7 @@ export function toBoardData(markdown: string): BoardData {
         data.title = titleMatch[1].trim()
         titleFound = true
         project = data
-        status = 'backlog'
+        status = 'todo'
         continue
       }
     }
@@ -79,7 +79,6 @@ export function toMarkdown(data: BoardData): string {
   appendHeading(lines, data.title)
 
   const projectTasks: { [key in Status]: string[] } = {
-    backlog: [],
     todo: [],
     doing: [],
     done: [],
@@ -89,11 +88,6 @@ export function toMarkdown(data: BoardData): string {
   data.tasks.forEach(task => {
     projectTasks[task.status].push(task.title)
   })
-
-  appendHeading(lines, 'Backlog', 2)
-  appendTasks(lines, projectTasks.backlog)
-  appendProjects(lines, data.projects, 'backlog')
-  appendHorizontalRule(lines)
 
   appendHeading(lines, 'To Do', 2)
   appendTasks(lines, projectTasks.todo)

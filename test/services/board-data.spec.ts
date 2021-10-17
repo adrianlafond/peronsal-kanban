@@ -39,13 +39,13 @@ describe('toBoardData', () => {
   })
 
   describe('projects and tasks', () => {
-    it('assigns board-level tasks to the backlog', () => {
+    it('assigns board-level tasks to todo', () => {
       const md = `
         - board-level task
       `
       const boardData = toBoardData(md)
       expect(boardData.tasks[0].title).toEqual('board-level task')
-      expect(boardData.tasks[0].status).toEqual('backlog')
+      expect(boardData.tasks[0].status).toEqual('todo')
     })
     describe('projects', () => {
       it('finds board-level projects', () => {
@@ -55,7 +55,7 @@ describe('toBoardData', () => {
         expect(toBoardData(md).projects[0].title).toBe('abcdefg')
       })
     })
-    it('assigns tasks in board-level projects to the backlog', () => {
+    it('assigns tasks in board-level projects to todo', () => {
       const md = `
         ### project-title
         - task A
@@ -67,9 +67,9 @@ describe('toBoardData', () => {
       expect(boardData.projects[0].title).toBe('project-title')
       expect(boardData.projects[0].tasks.length).toBe(2)
       expect(boardData.projects[0].tasks[0].title).toBe('task A')
-      expect(boardData.projects[0].tasks[0].status).toBe('backlog')
+      expect(boardData.projects[0].tasks[0].status).toBe('todo')
       expect(boardData.projects[0].tasks[1].title).toBe('task B')
-      expect(boardData.projects[0].tasks[1].status).toBe('backlog')
+      expect(boardData.projects[0].tasks[1].status).toBe('todo')
     })
     statuses.forEach(status => {
       it(`assigns tasks in ${status} to ${status}`, () => {
@@ -164,7 +164,7 @@ describe('toBoardData', () => {
         - task D
         ### project A
         - task A
-        ## todo
+        ## doing
         - task B
         ### project A
         - task C
@@ -176,20 +176,20 @@ describe('toBoardData', () => {
       expect(boardData.title).toBe('my board')
       expect(boardData.tasks.length).toBe(3)
       expect(boardData.tasks[0].title).toBe('task D')
-      expect(boardData.tasks[0].status).toBe('backlog')
+      expect(boardData.tasks[0].status).toBe('todo')
       expect(boardData.tasks[1].title).toBe('task B')
-      expect(boardData.tasks[1].status).toBe('todo')
+      expect(boardData.tasks[1].status).toBe('doing')
       expect(boardData.tasks[2].title).toBe('task E')
-      expect(boardData.tasks[2].status).toBe('backlog')
+      expect(boardData.tasks[2].status).toBe('todo')
       expect(boardData.projects.length).toBe(1)
       expect(boardData.projects[0].title).toBe('project A')
       expect(boardData.projects[0].tasks.length).toBe(3)
       expect(boardData.projects[0].tasks[0].title).toBe('task A')
-      expect(boardData.projects[0].tasks[0].status).toBe('backlog')
+      expect(boardData.projects[0].tasks[0].status).toBe('todo')
       expect(boardData.projects[0].tasks[1].title).toBe('task C')
-      expect(boardData.projects[0].tasks[1].status).toBe('todo')
+      expect(boardData.projects[0].tasks[1].status).toBe('doing')
       expect(boardData.projects[0].tasks[2].title).toBe('task E')
-      expect(boardData.projects[0].tasks[2].status).toBe('todo')
+      expect(boardData.projects[0].tasks[2].status).toBe('doing')
     })
   })
 })
