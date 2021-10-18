@@ -8,17 +8,8 @@
   export let task: Task
   export let projectId: string | null = null
 
-  function endEditing() {
-    BoardFile.write()
-  }
-
-  function handleInput(event: Event) {
-    const newValue = (event.target as HTMLInputElement).value || ''
-    if (projectId) {
-      BoardModel.updateProjectTaskTitle(newValue, projectId, task.id)
-    } else {
-      BoardModel.updateBoardTaskTitle(newValue, task.id)
-    }
+  function endEditing(event: Event) {
+    saveEdit((event.target as HTMLInputElement).value || '')
   }
 
   function handleSubmit(event: Event) {
@@ -28,8 +19,29 @@
     event.preventDefault()
   }
 
+  function saveEdit(value: string) {
+    const newValue = value.trim()
+    if (newValue) {
+      if (projectId) {
+        BoardModel.updateProjectTaskTitle(newValue, projectId, task.id)
+      } else {
+        BoardModel.updateBoardTaskTitle(newValue, task.id)
+      }
+    }
+    BoardFile.write()
+  }
+
   function handleDragStart() {
     console.log('dragStart')
+  }
+
+  function cancelEditByEscape(event: KeyboardEvent) {
+    if (event.key === 'Escape') {
+      const input = event.target as HTMLInputElement
+      input.value = ''
+      input.blur()
+      input.value = task.title
+    }
   }
 
   const unsubscribe = board.subscribe(boardData => {
@@ -62,8 +74,8 @@
         <Form on:submit={handleSubmit}>
           <TextInput
             value={task.title}
-            on:input={handleInput}
             on:blur={endEditing}
+            on:keydown={cancelEditByEscape}
             name="task-title"
             size="sm"
           />

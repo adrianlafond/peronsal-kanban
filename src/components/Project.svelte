@@ -17,12 +17,8 @@
     return project.tasks.filter(task => task.status === status)
   }
 
-  function endEditingProjectTitle() {
-    BoardFile.write()
-  }
-
-  function inputProjectTitle(event: Event) {
-    BoardModel.updateProjectTitle((event.target as HTMLInputElement).value || '', project.id)
+  function endEditingProjectTitle(event: Event) {
+    saveProjectTitle((event.target as HTMLInputElement).value || '')
   }
 
   function submitProjectTitle(event: Event) {
@@ -32,13 +28,24 @@
     event.preventDefault()
   }
 
+  function saveProjectTitle(value: string) {
+    const newValue = value.trim()
+    if (newValue) {
+      BoardModel.updateProjectTitle(newValue, project.id)
+      BoardFile.write()
+    }
+  }
+
   function addNewTask() {
     adding = true
   }
 
   function endAddingTask(event: Event) {
     const input = event.target as HTMLInputElement
-    BoardModel.addTask(input.value, status, project.id)
+    const trimmedValue = input.value.trim()
+    if (trimmedValue) {
+      BoardModel.addTask(trimmedValue, status, project.id)
+    }
     input.value = ''
     adding = false
   }
@@ -48,6 +55,23 @@
     const input = form.querySelector('input[name=new-task]') as HTMLInputElement
     input.blur()
     event.preventDefault()
+  }
+
+  function cancelEditProjectTitleByEscape(event: KeyboardEvent) {
+    cancelByEscape(event, project.title)
+  }
+
+  function cancelAddingByEscape(event: KeyboardEvent) {
+    cancelByEscape(event, (event.target as HTMLInputElement).placeholder)
+  }
+
+  function cancelByEscape(event: KeyboardEvent, resetText: string) {
+    if (event.key === 'Escape') {
+      const input = event.target as HTMLInputElement
+      input.value = ''
+      input.blur()
+      input.value = resetText
+    }
   }
 
   onDestroy(board.subscribe(boardData => {
@@ -67,8 +91,8 @@
         <Form on:submit={submitProjectTitle}>
           <TextInput
             value={project.title}
-            on:input={inputProjectTitle}
             on:blur={endEditingProjectTitle}
+            on:keydown={cancelEditProjectTitleByEscape}
             name="project-title"
           />
         </Form>
@@ -91,6 +115,7 @@
           name="new-task"
           autofocus
           on:blur={endAddingTask}
+          on:keydown={cancelAddingByEscape}
         />
       </Form>
     {/if}

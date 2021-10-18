@@ -53,21 +53,29 @@
   }
 
   function saveNewItem(value: string) {
-    if (value) {
+    const trimmedValue = value.trim()
+    if (trimmedValue) {
       if (adding === 'task') {
-        BoardModel.addTask(value, status)
+        BoardModel.addTask(trimmedValue, status)
       } else if (adding === 'project') {
-        BoardModel.addProject(value, status)
+        BoardModel.addProject(trimmedValue, status)
       }
     }
   }
 
-  const unsubscribe = board.subscribe(boardData => {
+  function cancelAddingByEscape(event: KeyboardEvent) {
+    if (event.key === 'Escape') {
+      const input = event.target as HTMLInputElement
+      input.value = ''
+      input.blur()
+      input.value = input.placeholder
+    }
+  }
+
+  onDestroy(board.subscribe(boardData => {
     tasks = boardData.data.tasks.filter(task => task.status === status)
     projects = boardData.data.projects
-  })
-
-  onDestroy(unsubscribe)
+  }))
 </script>
 
 <!-- svelte-ignore missing-declaration -->
@@ -99,6 +107,7 @@
         name="new-item"
         autofocus
         on:blur={endAdding}
+        on:keydown={cancelAddingByEscape}
       />
     </Form>
   {/if}
