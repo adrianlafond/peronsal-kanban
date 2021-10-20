@@ -1,9 +1,9 @@
-# Personal Kanban
+# my kanban mock
 
 ## To Do
 
-- sdfsdf
-- asdasdasd
+- sdfsdf OK
+- asdas OK and cancel again X
 - asdasdaasdaasdasdassd
 
 ### kjkjkljkljdfgkl

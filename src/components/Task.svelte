@@ -8,15 +8,14 @@
   export let task: Task
   export let projectId: string | null = null
 
-  function endEditing(event: Event) {
-    saveEdit((event.target as HTMLInputElement).value || '')
+  let editing = false
+
+  function startEditing() {
+    editing = true
   }
 
-  function handleSubmit(event: Event) {
-    const form = event.target as HTMLFormElement
-    const input = form.querySelector('input[name=task-title]') as HTMLInputElement
-    input.blur()
-    event.preventDefault()
+  function endEditing(event: Event) {
+    editing = false
   }
 
   function saveEdit(value: string) {
@@ -31,17 +30,25 @@
     BoardFile.write()
   }
 
-  function handleDragStart() {
-    console.log('dragStart')
+  function handleTitleKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      startEditing()
+      event.preventDefault()
+    }
   }
 
-  function cancelEditByEscape(event: KeyboardEvent) {
-    if (event.key === 'Escape') {
-      const input = event.target as HTMLInputElement
-      input.value = ''
+  function handleEditKeyDown(event: KeyboardEvent) {
+    const input = (event.target as HTMLInputElement)
+    if (event.key === 'Enter') {
+      saveEdit(input.value || '')
       input.blur()
-      input.value = task.title
+    } else if (event.key === 'Escape') {
+      input.blur()
     }
+  }
+
+  function handleDragStart() {
+    console.log('dragStart')
   }
 
   const unsubscribe = board.subscribe(boardData => {
@@ -67,20 +74,27 @@
 <Draggable on:dragStart={handleDragStart}>
   <ListItem>
     <div class="task__title">
-      <div class={`task__title-display${projectId ? ' task__title-display--project': ''}`}>
-        {task.title}
-      </div>
-      <div class="task__title-edit">
-        <Form on:submit={handleSubmit}>
+      {#if editing}
+        <div class="task__title-edit">
           <TextInput
             value={task.title}
+            autofocus
             on:blur={endEditing}
-            on:keydown={cancelEditByEscape}
+            on:keydown={handleEditKeyDown}
             name="task-title"
             size="sm"
           />
-        </Form>
-      </div>
+        </div>
+      {:else}
+        <p
+          class={`task__title-display${projectId ? ' task__title-display--project': ''}`}
+          tabindex={0}
+          on:dblclick={startEditing}
+          on:keydown={handleTitleKeyDown}
+        >
+          {task.title}
+        </p>
+      {/if}
     </div>
   </ListItem>
 </Draggable>
@@ -90,20 +104,21 @@
     position: relative;
   }
   .task__title-display {
-    position: absolute;
-    left: 0;
-    top: 0;
+    margin: 0;
     height: 2rem; /* matches TextInput SM height */
     line-height: 2;
   }
+  .task__title-display:hover {
+    background-color: #222a2f;
+  }
+  .task__title-display:focus {
+    background-color: #434a51;
+    outline: none;
+  }
   .task__title-display--project {
-    margin-left: 16px;
+    padding-left: 16px;
   }
   .task__title-edit {
     margin-left: 0;
-    opacity: 0;
-  }
-  .task__title-edit:focus-within {
-    opacity: 1;
   }
 </style>
