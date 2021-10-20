@@ -11,21 +11,19 @@
 
   const style = `background-color: ${project.color};`
   let tasks = getTasks()
+  let editing = false
   let adding = false
 
   function getTasks() {
     return project.tasks.filter(task => task.status === status)
   }
 
-  function endEditingProjectTitle(event: Event) {
-    saveProjectTitle((event.target as HTMLInputElement).value || '')
+  function startEditing() {
+    editing = true
   }
 
-  function submitProjectTitle(event: Event) {
-    const form = event.target as HTMLFormElement
-    const input = form.querySelector('input[name=project-title]') as HTMLInputElement
-    input.blur()
-    event.preventDefault()
+  function endEditing() {
+    editing = false
   }
 
   function saveProjectTitle(value: string) {
@@ -36,41 +34,46 @@
     }
   }
 
+  function handleTitleKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      startEditing()
+      event.preventDefault()
+    }
+  }
+
+  function handleEditKeyDown(event: KeyboardEvent) {
+    const input = (event.target as HTMLInputElement)
+    if (event.key === 'Enter') {
+      saveProjectTitle(input.value || '')
+      input.blur()
+    } else if (event.key === 'Escape') {
+      input.blur()
+    }
+  }
+
   function addNewTask() {
     adding = true
   }
 
-  function endAddingTask(event: Event) {
-    const input = event.target as HTMLInputElement
-    const trimmedValue = input.value.trim()
-    if (trimmedValue) {
-      BoardModel.addTask(trimmedValue, status, project.id)
-    }
-    input.value = ''
+  function endAdding(event: Event) {
     adding = false
   }
 
-  function submitAddTask(event: Event) {
-    const form = event.target as HTMLFormElement
-    const input = form.querySelector('input[name=new-task]') as HTMLInputElement
-    input.blur()
-    event.preventDefault()
-  }
-
-  function cancelEditProjectTitleByEscape(event: KeyboardEvent) {
-    cancelByEscape(event, project.title)
-  }
-
-  function cancelAddingByEscape(event: KeyboardEvent) {
-    cancelByEscape(event, (event.target as HTMLInputElement).placeholder)
-  }
-
-  function cancelByEscape(event: KeyboardEvent, resetText: string) {
-    if (event.key === 'Escape') {
-      const input = event.target as HTMLInputElement
+  function handleAddingKeyDown(event: KeyboardEvent) {
+    const input = (event.target as HTMLInputElement)
+    if (event.key === 'Enter') {
+      saveNewTask(input.value || '')
       input.value = ''
       input.blur()
-      input.value = resetText
+    } else if (event.key === 'Escape') {
+      input.blur()
+    }
+  }
+
+  function saveNewTask(value: string) {
+    const trimmedValue = value.trim()
+    if (trimmedValue) {
+      BoardModel.addTask(trimmedValue, status, project.id)
     }
   }
 
@@ -84,19 +87,27 @@
 {#if tasks.length}
   <div class="project">
     <div class="project__title" style={style}>
-      <h5 class="project__title-display">
-        {project.title}
-      </h5>
-      <div class="project__title-edit">
-        <Form on:submit={submitProjectTitle}>
+      {#if editing}
+        <div class="project__title-edit">
           <TextInput
             value={project.title}
-            on:blur={endEditingProjectTitle}
-            on:keydown={cancelEditProjectTitleByEscape}
+            autofocus
+            tabindex={0}
+            on:blur={endEditing}
+            on:keydown={handleEditKeyDown}
             name="project-title"
           />
-        </Form>
-      </div>
+        </div>
+      {:else}
+        <h5
+          class="project__title-display"
+          tabindex={0}
+          on:dblclick={startEditing}
+          on:keydown={handleTitleKeyDown}
+        >
+          {project.title}
+        </h5>
+      {/if}
       <div class="project__new-task-button">
         <Button
           on:click={addNewTask}
@@ -104,20 +115,19 @@
           iconDescription="Add new task"
           size="small"
           kind="ghost"
+          disabled={adding}
         />
       </div>
     </div>
     {#if adding}
-      <Form on:submit={submitAddTask}>
-        <TextInput
-          labelText="New task"
-          placeholder="title"
-          name="new-task"
-          autofocus
-          on:blur={endAddingTask}
-          on:keydown={cancelAddingByEscape}
-        />
-      </Form>
+      <TextInput
+        labelText="New task"
+        placeholder="title"
+        name="new-task"
+        autofocus
+        on:blur={endAdding}
+        on:keydown={handleAddingKeyDown}
+      />
     {/if}
     <UnorderedList>
       {#each tasks as task (task.id)}
@@ -138,18 +148,15 @@
     display: flex;
   }
   .project__title-display {
-    position: absolute;
-    left: 16px;
-    top: 4px;
+    flex-grow: 1;
+    margin: 0 0 0 16px;
     height: 2.5rem; /* matches TextInput height */
     line-height: 2.5;
+    cursor: default;
   }
+
   .project__title-edit {
-    opacity: 0;
     flex-grow: 1;
-  }
-  .project__title-edit:focus-within {
-    opacity: 1;
   }
   .project__new-task-button {
     display: flex;

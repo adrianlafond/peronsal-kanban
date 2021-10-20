@@ -107,6 +107,7 @@
     margin: 0;
     height: 2rem; /* matches TextInput SM height */
     line-height: 2;
+    cursor: default;
   }
   .task__title-display:hover {
     background-color: #222a2f;
