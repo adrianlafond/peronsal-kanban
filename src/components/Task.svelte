@@ -14,7 +14,7 @@
     editing = true
   }
 
-  function endEditing(event: Event) {
+  function endEditing() {
     editing = false
   }
 

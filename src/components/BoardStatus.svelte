@@ -39,17 +39,18 @@
   }
 
   function endAdding(event: Event) {
-    const input = event.target as HTMLInputElement
-    saveNewItem(input.value)
-    input.value = ''
+    (event.target as HTMLInputElement).value = ''
     adding = null
   }
 
-  function submitNewItem(event: Event) {
-    const form = event.target as HTMLFormElement
-    const input = form.querySelector('input[name=new-item]') as HTMLInputElement
-    input.blur()
-    event.preventDefault()
+  function handleAddingKeyDown(event: KeyboardEvent) {
+    const input = (event.target as HTMLInputElement)
+    if (event.key === 'Enter') {
+      saveNewItem(input.value || '')
+      input.blur()
+    } else if (event.key === 'Escape') {
+      input.blur()
+    }
   }
 
   function saveNewItem(value: string) {
@@ -60,15 +61,6 @@
       } else if (adding === 'project') {
         BoardModel.addProject(trimmedValue, status)
       }
-    }
-  }
-
-  function cancelAddingByEscape(event: KeyboardEvent) {
-    if (event.key === 'Escape') {
-      const input = event.target as HTMLInputElement
-      input.value = ''
-      input.blur()
-      input.value = input.placeholder
     }
   }
 
@@ -89,6 +81,7 @@
         iconDescription="Add new task"
         size="small"
         kind="ghost"
+        disabled={adding}
       />
       <Button
         on:click={addNewProject}
@@ -96,20 +89,19 @@
         iconDescription="Add new project"
         size="small"
         kind="ghost"
+        disabled={adding}
       />
     </div>
   </div>
   {#if adding}
-    <Form on:submit={submitNewItem}>
-      <TextInput
-        labelText={`New ${adding}`}
-        placeholder="title"
-        name="new-item"
-        autofocus
-        on:blur={endAdding}
-        on:keydown={cancelAddingByEscape}
-      />
-    </Form>
+    <TextInput
+      labelText={`New ${adding}`}
+      placeholder="title"
+      name="new-item"
+      autofocus
+      on:blur={endAdding}
+      on:keydown={handleAddingKeyDown}
+    />
   {/if}
   <div class="board-status__tiles">
     {#if tasks.length}
