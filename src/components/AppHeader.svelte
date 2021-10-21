@@ -6,20 +6,36 @@
   import FetchBoard from './FetchBoard.svelte'
 
   let title = ''
+  let editing = false
 
-  function finishEditing() {
+  function startEditing() {
+    editing = true
+  }
+
+  function endEditing(event: Event) {
+    editing = false
+  }
+
+  function saveEdit(value: string) {
+    BoardModel.updateBoardTitle(value || '')
     BoardFile.write()
   }
 
-  function handleInput(event: Event) {
-    BoardModel.updateBoardTitle((event.target as HTMLInputElement).value || '')
+  function handleEditKeyDown(event: KeyboardEvent) {
+    const input = (event.target as HTMLInputElement)
+    if (event.key === 'Enter') {
+      saveEdit(input.value)
+      input.blur()
+    } else if (event.key === 'Escape') {
+      input.blur()
+    }
   }
 
-  function handleSubmit(event: Event) {
-    const form = event.target as HTMLFormElement
-    const input = form.querySelector('input[name=board-title]') as HTMLInputElement
-    input.blur()
-    event.preventDefault()
+  function handleTitleKeyDown(event: KeyboardEvent) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      startEditing()
+      event.preventDefault()
+    }
   }
 
   const unsubscribe = board.subscribe(boardData => {
@@ -33,20 +49,27 @@
 <!-- svelte-ignore missing-declaration -->
 <div class="app-header">
   <div class="app-header__title">
-    <h3 class="app-header__title-display">
-      {title}
-    </h3>
-    <div class="app-header__title-edit">
-      <Form on:submit={handleSubmit}>
+    {#if editing}
+      <div class="app-header__title-edit">
         <TextInput
           value={title}
-          on:input={handleInput}
-          on:blur={finishEditing}
+          autofocus
+          on:blur={endEditing}
+          on:keydown={handleEditKeyDown}
           name="board-title"
           size="xl"
         />
-      </Form>
-    </div>
+      </div>
+    {:else}
+      <h3
+        class="app-header__title-display"
+        tabindex={0}
+        on:dblclick={startEditing}
+        on:keydown={handleTitleKeyDown}
+      >
+        {title}
+      </h3>
+    {/if}
   </div>
   <FetchBoard />
 </div>
@@ -64,11 +87,16 @@
   position: relative;
 }
 .app-header__title-display {
-  position: absolute;
-  left: 0;
-  top: 0;
   height: 3rem; /* matches TextInput XL height */
   line-height: 1.5;
+  cursor: default;
+}
+.app-header__title-display:hover {
+  background-color: #222a2f;
+}
+.app-header__title-display:focus {
+  background-color: #434a51;
+  outline: none;
 }
 .app-header__title-edit {
   opacity: 0;
