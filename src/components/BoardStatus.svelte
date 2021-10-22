@@ -81,7 +81,7 @@
         iconDescription="Add new task"
         size="small"
         kind="ghost"
-        disabled={adding}
+        disabled={!!adding}
       />
       <Button
         on:click={addNewProject}
@@ -89,7 +89,7 @@
         iconDescription="Add new project"
         size="small"
         kind="ghost"
-        disabled={adding}
+        disabled={!!adding}
       />
     </div>
   </div>

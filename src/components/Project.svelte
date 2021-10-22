@@ -2,6 +2,7 @@
   import { onDestroy } from 'svelte'
   import { Button, Form, TextInput, UnorderedList } from 'carbon-components-svelte'
   import DocumentAdd20 from 'carbon-icons-svelte/lib/DocumentAdd20'
+  import Draggable from './Draggable.svelte'
   import Task from './Task.svelte'
   import { board } from '../stores'
   import { Project, Status, BoardModel, BoardFile } from '../services'
@@ -85,6 +86,7 @@
 
 <!-- svelte-ignore missing-declaration -->
 {#if tasks.length}
+  <Draggable>
   <div class="project">
     <div class="project__title" style={style}>
       {#if editing}
@@ -135,6 +137,7 @@
       {/each}
     </UnorderedList>
   </div>
+  </Draggable>
 {/if}
 
 <style>
