@@ -9,6 +9,7 @@
   export let projectId: string | null = null
 
   let editing = false
+  let dragging = false
 
   function startEditing() {
     editing = true
@@ -48,7 +49,11 @@
   }
 
   function handleDragStart() {
-    console.log('dragStart')
+    dragging = true
+  }
+
+  function handleDragEnd() {
+    dragging = false
   }
 
   const unsubscribe = board.subscribe(boardData => {
@@ -71,7 +76,7 @@
 </script>
 
 <!-- svelte-ignore missing-declaration -->
-<Draggable on:dragStart={handleDragStart}>
+<Draggable on:dragStart={handleDragStart} on:dragEnd={handleDragEnd}>
   <ListItem>
     <div class="task__title">
       {#if editing}

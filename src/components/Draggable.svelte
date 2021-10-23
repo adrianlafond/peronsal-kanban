@@ -9,7 +9,7 @@
   const offset = { x: 0, y: 0 }
 
   function handleMouseDown(event: MouseEvent) {
-    dispatch('dragStart', {})
+    event.stopImmediatePropagation()
     el = event.currentTarget as HTMLDivElement
     startRect = el.getBoundingClientRect()
     offset.x = event.clientX - startRect.x
@@ -32,15 +32,29 @@
     dragging = true
     window.addEventListener('mousemove', handleMouseMove)
     window.addEventListener('mouseup', handleMouseUp)
+    dispatch('dragStart', {})
   }
 
   function stopDragging() {
     dragging = false
     window.removeEventListener('mousemove', handleMouseMove)
     window.removeEventListener('mouseup', handleMouseUp)
+    dispatch('dragEnd', {})
   }
 </script>
 
-<div on:mousedown={handleMouseDown}>
+<div
+  on:mousedown={handleMouseDown}
+  class={`draggable${dragging ? ' draggable--dragging' : ''}`}
+>
   <slot />
 </div>
+
+<style>
+  .draggable {
+    position: relative;
+  }
+  .draggable--dragging {
+    z-index: 100;
+  }
+</style>
