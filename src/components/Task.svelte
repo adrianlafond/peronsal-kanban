@@ -77,7 +77,12 @@
 
 <!-- svelte-ignore missing-declaration -->
 <Draggable on:dragStart={handleDragStart} on:dragEnd={handleDragEnd}>
-  <ListItem>
+  <ListItem
+    data-kanban-type="task"
+    data-kanban-project={projectId}
+    data-kanban-task={task.id}
+    data-kanban-status={task.status}
+  >
     <div class="task__title">
       {#if editing}
         <div class="task__title-edit">

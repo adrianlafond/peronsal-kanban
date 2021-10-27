@@ -71,7 +71,7 @@
 </script>
 
 <!-- svelte-ignore missing-declaration -->
-<div class="board-status">
+<div class="board-status" data-kanban-type="status" data-kanban-status={status}>
   <div class="board-status__title">
     <h4 class="board-status__title-display">{getStatusTitle()}</h4>
     <div>

@@ -87,7 +87,11 @@
 <!-- svelte-ignore missing-declaration -->
 {#if tasks.length}
   <Draggable>
-  <div class="project">
+  <div
+    class="project"
+    data-kanban-type="project"
+    data-kanban-project={project.id}
+  >
     <div class="project__title" style={style}>
       {#if editing}
         <div class="project__title-edit">
