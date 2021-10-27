@@ -53,8 +53,10 @@
 <style>
   .draggable {
     position: relative;
+    transition: transform 0.15s ease-out;
   }
   .draggable--dragging {
     z-index: 100;
+    transition: none;
   }
 </style>
