@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onDestroy } from 'svelte'
-  import { ListItem, Form, TextInput } from 'carbon-components-svelte'
-  import { Task, BoardModel, BoardFile } from '../services'
+  import { ListItem, TextInput } from 'carbon-components-svelte'
+  import { Task, BoardModel, BoardFile, TaskData } from '../services'
   import { board } from '../stores'
   import Draggable from './Draggable.svelte'
 
@@ -52,8 +52,9 @@
     dragging = true
   }
 
-  function handleDragEnd() {
+  function handleDragEnd(event: Event) {
     dragging = false
+    BoardModel.moveTask(task, (event as DragEvent).detail as unknown as TaskData)
   }
 
   const unsubscribe = board.subscribe(boardData => {

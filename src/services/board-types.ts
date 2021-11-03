@@ -18,3 +18,9 @@ export interface BoardData {
   projects: Project[]
   tasks: Task[]
 }
+
+export interface TaskData {
+  status: Status | null;
+  project: string | null;
+  task: string | null;
+}
