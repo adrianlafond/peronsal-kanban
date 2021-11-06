@@ -62,17 +62,30 @@ export class BoardModel {
   }
 
   static moveProject(project: Project, target: TaskData, fromStatus: Status) {
+    // Create a new project with relevant tasks' status updated.
+    const newProject = {
+      title: project.title,
+      id: project.id,
+      color: project.color,
+      tasks: project.tasks.map(task => ({
+        id: task.id,
+        title: task.title,
+        status: target.status && task.status === fromStatus ? target.status : task.status,
+      })),
+    }
+
     board.update(data => produce(data, draft => {
+      // Change the order of the project amongst other projects.
       BoardModel.deleteProject(draft.data, project)
       if (target.project) {
         draft.data.projects.some((boardProject, index, array) => {
           if (boardProject.id === target.project) {
-            array.splice(index + 1, 0, project)
+            array.splice(index + 1, 0, newProject)
             return true
           }
         })
       } else {
-        draft.data.projects.unshift(project)
+        draft.data.projects.unshift(newProject)
       }
     }))
   }
