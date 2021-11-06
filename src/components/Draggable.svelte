@@ -58,9 +58,11 @@
     window.removeEventListener('mouseup', handleMouseUp)
 
     // Check if the drop target task is the same task that is being dragged.
-    const childNode = el?.firstChild
-    if (childNode && (childNode as HTMLElement).getAttribute('data-kanban-task') === dropData.task) {
-      resetDropData()
+    if (el?.firstChild) {
+      const childNode = el?.firstChild as HTMLElement
+      if (childNode.getAttribute('data-kanban-type') === 'task' && childNode.getAttribute('data-kanban-task') === dropData.task) {
+        resetDropData()
+      }
     }
 
     dispatch('dragEnd', dropData)
@@ -74,7 +76,8 @@
       dropData.status = statusEl?.getAttribute('data-kanban-status') as Status
       const elChild = el.firstChild as HTMLElement
       if (elChild.getAttribute('data-kanban-type') === 'project') {
-        //
+        const projectEl = getProjectBefore(statusEl, elRect, elChild)
+        dropData.project = projectEl?.getAttribute('data-kanban-project') || null
       } else {
         // If not a project, must be a task.
         const taskEl = getTaskBefore(statusEl, elRect, elChild)
@@ -109,19 +112,27 @@
     return null
   }
 
+  function getProjectBefore(statusEl: Element, elRect: DOMRect, dragEl: HTMLElement) {
+    return getItemBefore(statusEl, elRect, dragEl, 'project')
+  }
+
   function getTaskBefore(statusEl: Element, elRect: DOMRect, dragEl: HTMLElement) {
-    const taskEls = statusEl.querySelectorAll('[data-kanban-type="task"]')
-    let dropTask: Element | null = null;
-    for (let i = 0; i < taskEls.length; i++) {
-      if (taskEls[i] === dragEl) {
+    return getItemBefore(statusEl, elRect, dragEl, 'task')
+  }
+
+  function getItemBefore(statusEl: Element, elRect: DOMRect, dragEl: HTMLElement, type: 'task' | 'project') {
+    const els = statusEl.querySelectorAll(`[data-kanban-type="${type}"]`)
+    let dropEl: Element | null = null;
+    for (let i = 0; i < els.length; i++) {
+      if (els[i] === dragEl) {
         continue
       }
-      const taskRect = taskEls[i].getBoundingClientRect()
-      if (elRect.top >= taskRect.top) {
-        dropTask = taskEls[i]
+      const itemRect = els[i].getBoundingClientRect()
+      if (elRect.top >= itemRect.top) {
+        dropEl = els[i]
       }
     }
-    return dropTask
+    return dropEl
   }
 </script>
 

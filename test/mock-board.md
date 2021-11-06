@@ -2,12 +2,9 @@
 
 ## To Do
 
-- XXXXX
-- sdfsdfds
 - sdfsfds
 - sdfsdf OK
-- asdas OK and cancel again X
-- asdasdaasdaasdasdassd
+- sdfsdfds
 
 ### ABC
 
@@ -24,7 +21,6 @@
 
 ### My Project
 
-- Buy milk
 - new task
 
 ### lkkjl;kl;kl;
@@ -56,6 +52,7 @@
 ## Doing
 
 - sdsdf
+- Buy milk
 - doing the doo
 
 ### ABC
@@ -72,9 +69,11 @@
 
 - now?
 - maybe?
+- asdas OK and cancel again X
+- this is my new task
+- asdasdaasdaasdasdassd
 - let's try this
 - well?
-- this is my new task
 - water the plants
 - new task
 
@@ -85,6 +84,8 @@
 ----------
 
 ## Done
+
+- XXXXX
 
 ### ABC
 

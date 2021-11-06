@@ -55,6 +55,7 @@
   function handleDragEnd(event: Event) {
     dragging = false
     BoardModel.moveTask(task, (event as DragEvent).detail as unknown as TaskData)
+    BoardFile.write()
   }
 
   const unsubscribe = board.subscribe(boardData => {

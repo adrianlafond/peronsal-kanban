@@ -5,6 +5,7 @@ import type { Status, Project, TaskData, Task, BoardData } from './board-types'
 import { BoardFile } from './board-file'
 import { getProjectColor } from './color'
 import { Uid } from './uid'
+import type Project__SvelteComponent_ from '../components/Project.svelte'
 
 export class BoardModel {
   static updateBoardTitle(newTitle: string) {
@@ -58,6 +59,22 @@ export class BoardModel {
       draft.data.projects.unshift(project)
     }))
     BoardFile.write()
+  }
+
+  static moveProject(project: Project, target: TaskData, fromStatus: Status) {
+    board.update(data => produce(data, draft => {
+      BoardModel.deleteProject(draft.data, project)
+      if (target.project) {
+        draft.data.projects.some((boardProject, index, array) => {
+          if (boardProject.id === target.project) {
+            array.splice(index + 1, 0, project)
+            return true
+          }
+        })
+      } else {
+        draft.data.projects.unshift(project)
+      }
+    }))
   }
 
   static addTask(title: string, status: Status = 'todo', projectId?: string) {
@@ -133,6 +150,15 @@ export class BoardModel {
       if (boardTask.id === task.id) {
         array.splice(index, 1)
         return true
+      }
+    })
+  }
+
+  private static deleteProject(board: BoardData, project: Project) {
+    board.projects.find((boardProject, index, array) => {
+      if (boardProject.id === project.id) {
+        array.splice(index, 1);
+        return true;
       }
     })
   }

@@ -5,7 +5,7 @@
   import Draggable from './Draggable.svelte'
   import Task from './Task.svelte'
   import { board } from '../stores'
-  import { Project, Status, BoardModel, BoardFile } from '../services'
+  import { Project, Status, BoardModel, BoardFile, TaskData } from '../services'
 
   export let project: Project
   export let status: Status
@@ -14,6 +14,7 @@
   let tasks = getTasks()
   let editing = false
   let adding = false
+  let dragging = false
 
   function getTasks() {
     return project.tasks.filter(task => task.status === status)
@@ -78,6 +79,17 @@
     }
   }
 
+  function handleDragStart() {
+    dragging = true
+  }
+
+  function handleDragEnd(event: Event) {
+    dragging = false
+    const data: TaskData = (event as DragEvent).detail as unknown as TaskData;
+    BoardModel.moveProject(project, data, status)
+    // BoardFile.write()
+  }
+
   onDestroy(board.subscribe(boardData => {
     project = boardData.data.projects.find(p => p.id === project.id) || project
     tasks = getTasks()
@@ -86,11 +98,12 @@
 
 <!-- svelte-ignore missing-declaration -->
 {#if tasks.length}
-  <Draggable>
+  <Draggable on:dragStart={handleDragStart} on:dragEnd={handleDragEnd}>
   <div
     class="project"
     data-kanban-type="project"
     data-kanban-project={project.id}
+    data-kanban-status={status}
   >
     <div class="project__title" style={style}>
       {#if editing}
