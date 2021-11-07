@@ -1,12 +1,18 @@
 import { writable } from 'svelte/store'
-import type { Project, Task } from '../services/board-types'
+import type { Project, Status, Task } from '../services/board-types'
 
 export interface Selected {
-  projects: Project[]
-  tasks: Task[]
+  projects: string[]
+  tasks: string[]
+  status: Status
 }
 
-export const board = writable<Selected>({
-  projects: [],
-  tasks: [],
-})
+export function getSelectedReset(): Selected {
+  return {
+    projects: [],
+    tasks: [],
+    status: 'todo'
+  }
+}
+
+export const selected = writable<Selected>(getSelectedReset())

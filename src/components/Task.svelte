@@ -1,8 +1,10 @@
 <script lang="ts">
   import { onDestroy } from 'svelte'
+  import { get } from 'svelte/store'
   import { ListItem, TextInput } from 'carbon-components-svelte'
-  import { Task, BoardModel, BoardFile, TaskData } from '../services'
-  import { board } from '../stores'
+  import classNames from 'classnames'
+  import { Task, BoardModel, BoardFile, TaskData, Selection } from '../services'
+  import { board, selected } from '../stores'
   import Draggable from './Draggable.svelte'
 
   export let task: Task
@@ -10,6 +12,7 @@
 
   let editing = false
   let dragging = false
+  let isSelected = false
 
   function startEditing() {
     editing = true
@@ -58,7 +61,21 @@
     BoardFile.write()
   }
 
-  const unsubscribe = board.subscribe(boardData => {
+  function handleTitleSelect() {
+    if (task.id) {
+      Selection.instance.selectTask(task)
+    }
+  }
+
+  function getTitleDisplayClass() {
+    return classNames('task__title-display', {
+      'task__title-display--project': projectId,
+      'task__title-display--selected': isSelected,
+    })
+  }
+  let titleClass = getTitleDisplayClass()
+
+  const unsubscribeFromBoard = board.subscribe(boardData => {
     if (projectId) {
       task = boardData.data.projects
         .find(data => data.id === projectId)
@@ -74,7 +91,15 @@
     }
   })
 
-  onDestroy(unsubscribe)
+  const unsubscribeFromSelected = selected.subscribe(selectedData => {
+    isSelected = selectedData.tasks.some(selectedTask => selectedTask === task.id)
+    titleClass = getTitleDisplayClass()
+  })
+
+  onDestroy(() => {
+    unsubscribeFromBoard()
+    unsubscribeFromSelected()
+  })
 </script>
 
 <!-- svelte-ignore missing-declaration -->
@@ -99,10 +124,11 @@
         </div>
       {:else}
         <p
-          class={`task__title-display${projectId ? ' task__title-display--project': ''}`}
+          class={titleClass}
           tabindex={0}
           on:dblclick={startEditing}
           on:keydown={handleTitleKeyDown}
+          on:mousedown={handleTitleSelect}
         >
           {task.title}
         </p>
@@ -124,8 +150,12 @@
   .task__title-display:hover {
     background-color: #222a2f;
   }
-  .task__title-display:focus {
+  .task__title-display--selected,
+  .task__title-display--selected:hover {
     background-color: #434a51;
+  }
+  .task__title-display:focus {
+    color: #f1c21b;
     outline: none;
   }
   .task__title-display--project {

@@ -3,13 +3,13 @@ export type Status = 'todo' | 'doing' | 'done' | 'archive'
 export interface Task {
   title: string
   status: Status
-  id?: string
+  id: string
 }
 
 export interface Project {
   title: string
   tasks: Task[]
-  id?: string
+  id: string
   color?: string
 }
 

@@ -207,7 +207,7 @@ describe('toMarkdown', () => {
       const input = {
         title: 'A',
         projects: [],
-        tasks: [{ title: 'B', status: status as Status }],
+        tasks: [{ id: '123', title: 'B', status: status as Status }],
       }
       const output = toBoardData(toMarkdown(input))
       expect(output.tasks.length).toBe(1)
@@ -217,7 +217,7 @@ describe('toMarkdown', () => {
     it(`writes projects and project tasks to status ${status}`, () => {
       const input = {
         title: 'A',
-        projects: [{ title: 'B', tasks: [{ title: 'C', status: status as Status }]}],
+        projects: [{ id: '123', title: 'B', tasks: [{ id: '456', title: 'C', status: status as Status }]}],
         tasks: [],
       }
       const output = toBoardData(toMarkdown(input))
