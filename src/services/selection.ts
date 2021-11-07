@@ -87,10 +87,6 @@ export class Selection {
           }
         }
 
-        // TODO: If data.tasks.length === 0, then tasks = [task.id]
-        // else selection should include all tasks between tasks[0] and task
-        // and remove all tasks not between that selection.
-
         return {
           ...data,
           status: task.status,

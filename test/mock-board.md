@@ -3,7 +3,6 @@
 ## To Do
 
 - sdfsfds
-- sdfsdf OK
 - sdfsdfds
 - new task
 
@@ -50,9 +49,10 @@
 
 ## Doing
 
-- sdsdf
 - Buy milk
 - doing the doo
+- sdsdf
+- sdfsdf OK
 
 ### ABC
 
