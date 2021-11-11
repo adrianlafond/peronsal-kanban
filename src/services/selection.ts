@@ -62,26 +62,28 @@ export class Selection {
           const statusEl = document.querySelector(`[data-kanban-type="status"][data-kanban-status="${task.status}"]`)
           if (statusEl) {
             const taskEls = statusEl.querySelectorAll('[data-kanban-type="task"]')
-            let taskIndex = -1
-            let indexIndex = -1
-            for (let i = 0; i < taskEls.length; i++) {
-              if (taskEls[i] === taskEl) {
-                taskIndex = i
-              } else if (taskEls[i] === indexEl) {
-                indexIndex = i
+            if (taskEls) {
+              let taskIndex = -1
+              let indexIndex = -1
+              for (let i = 0; i < taskEls.length; i++) {
+                if (taskEls[i] === taskEl) {
+                  taskIndex = i
+                } else if (taskEls[i] === indexEl) {
+                  indexIndex = i
+                }
+                if (taskIndex !== -1 && indexIndex !== -1) {
+                  break
+                }
               }
-              if (taskIndex !== -1 && indexIndex !== -1) {
-                break
-              }
-            }
 
-            if (indexIndex < taskIndex) {
-              for (let i = indexIndex; i <= taskIndex; i++) {
-                tasks.push(taskEls[i].getAttribute('data-kanban-task')!)
-              }
-            } else {
-              for (let i = indexIndex; i >= taskIndex; i--) {
-                tasks.push(taskEls[i].getAttribute('data-kanban-task')!)
+              if (indexIndex < taskIndex) {
+                for (let i = indexIndex; i <= taskIndex; i++) {
+                  tasks.push(taskEls[i].getAttribute('data-kanban-task')!)
+                }
+              } else {
+                for (let i = indexIndex; i >= taskIndex; i--) {
+                  tasks.push(taskEls[i].getAttribute('data-kanban-task')!)
+                }
               }
             }
           }

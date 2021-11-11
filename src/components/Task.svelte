@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onDestroy } from 'svelte'
-  import { get } from 'svelte/store'
   import { ListItem, TextInput } from 'carbon-components-svelte'
   import classNames from 'classnames'
   import { Task, BoardModel, BoardFile, TaskData, Selection } from '../services'
@@ -103,7 +102,11 @@
 </script>
 
 <!-- svelte-ignore missing-declaration -->
-<Draggable on:dragStart={handleDragStart} on:dragEnd={handleDragEnd}>
+<Draggable
+  taskId={task.id}
+  on:dragStart={handleDragStart}
+  on:dragEnd={handleDragEnd}
+>
   <ListItem
     data-kanban-type="task"
     data-kanban-project={projectId}

@@ -2,24 +2,18 @@
 
 ## To Do
 
+- new task
 - sdfsfds
-- sdfsdfds
+- new task
 - new task
 
 ### ABC
 
 ### asdfsdfsdf
 
-- new task
-
 ### GGGG
 
-- new task
-- new task
-
 ### My Project
-
-- new task
 
 ### lkkjl;kl;kl;
 
@@ -49,10 +43,13 @@
 
 ## Doing
 
-- Buy milk
+- new task
+- new task
 - doing the doo
 - sdsdf
+- Buy milk
 - sdfsdf OK
+- sdfsdfds
 
 ### ABC
 

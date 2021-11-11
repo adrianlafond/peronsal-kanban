@@ -5,13 +5,18 @@ export interface Selected {
   projects: string[]
   tasks: string[]
   status: Status
+  dragging: {
+    clientX: number
+    clientY: number
+  } | null
 }
 
 export function getSelectedReset(): Selected {
   return {
     projects: [],
     tasks: [],
-    status: 'todo'
+    status: 'todo',
+    dragging: null,
   }
 }
 

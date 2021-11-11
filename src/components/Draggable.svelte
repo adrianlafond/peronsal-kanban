@@ -1,6 +1,10 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte'
-  import type { Status, TaskData } from '../services';
+  import { createEventDispatcher, onDestroy } from 'svelte'
+  import type { Status, TaskData } from '../services'
+  import { selected } from '../stores'
+
+  export let projectId: string | null = null;
+  export let taskId: string | null = null;
 
   const dispatch = createEventDispatcher()
 
@@ -18,54 +22,72 @@
 
   function handleMouseDown(event: MouseEvent) {
     event.stopImmediatePropagation()
-    el = event.currentTarget as HTMLDivElement
-    startRect = el.getBoundingClientRect()
-    offset.x = event.clientX - startRect.x
-    offset.y = event.clientY - startRect.y
-    startScroll.x = window.scrollX
-    startScroll.y = window.scrollY
-    startDragging()
+
+    resetDropData()
+    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mouseup', handleMouseUp)
+
+    selected.update(data => ({
+      ...data,
+      dragging: event,
+    }))
   }
 
   function handleMouseMove(event: MouseEvent) {
-    drag(event.clientX, event.clientY)
+    selected.update(data => ({
+      ...data,
+      dragging: event,
+    }))
     updateDropPosition()
   }
 
   function handleMouseUp(event: MouseEvent) {
-    el.style.transform = 'none'
-    stopDragging()
+    window.removeEventListener('mousemove', handleMouseMove)
+    window.removeEventListener('mouseup', handleMouseUp)
+    selected.update(data => ({
+      ...data,
+      dragging: null,
+    }))
+  }
+
+  function startDragging(clientX: number, clientY: number) {
+    startRect = el.getBoundingClientRect()
+    offset.x = clientX - startRect.x
+    offset.y = clientY - startRect.y
+    startScroll.x = window.scrollX
+    startScroll.y = window.scrollY
+    dragging = true
+    dispatch('dragStart')
   }
 
   // Update drag's object's position, accounting for offset and page scroll.
   function drag(x: number, y: number) {
-    x -= startRect.x + offset.x - (window.scrollX - startScroll.x)
-    y -= startRect.y + offset.y - (window.scrollY - startScroll.y)
-    el.style.transform = `translate(${x}px, ${y}px)`
-  }
-
-  function startDragging() {
-    resetDropData()
-    dragging = true
-    window.addEventListener('mousemove', handleMouseMove)
-    window.addEventListener('mouseup', handleMouseUp)
-    dispatch('dragStart')
+    if (dragging) {
+      x -= startRect.x + offset.x - (window.scrollX - startScroll.x)
+      y -= startRect.y + offset.y - (window.scrollY - startScroll.y)
+      el.style.transform = `translate(${x}px, ${y}px)`
+    } else {
+      startDragging(x, y)
+    }
   }
 
   function stopDragging() {
     dragging = false
-    window.removeEventListener('mousemove', handleMouseMove)
-    window.removeEventListener('mouseup', handleMouseUp)
+    if (el) {
+      el.style.transform = 'none'
 
-    // Check if the drop target task is the same task that is being dragged.
-    if (el?.firstChild) {
-      const childNode = el?.firstChild as HTMLElement
-      if (childNode.getAttribute('data-kanban-type') === 'task' && childNode.getAttribute('data-kanban-task') === dropData.task) {
-        resetDropData()
+      // Check if the drop target task is the same task that is being dragged.
+      if (el?.firstChild) {
+        const childNode = el?.firstChild as HTMLElement
+        if (childNode.getAttribute('data-kanban-type') === 'task' && childNode.getAttribute('data-kanban-task') === dropData.task) {
+          resetDropData()
+        }
       }
-    }
 
-    dispatch('dragEnd', dropData)
+      dispatch('dragEnd', dropData)
+    } else {
+      window.setTimeout(stopDragging, 0)
+    }
   }
 
   // Finds the drag object's potential new status and project if dropped.
@@ -134,9 +156,20 @@
     }
     return dropEl
   }
+
+  onDestroy(selected.subscribe(selectedData => {
+    if (taskId && selectedData.tasks.includes(taskId)) {
+      if (selectedData.dragging) {
+        drag(selectedData.dragging.clientX, selectedData.dragging.clientY)
+      } else {
+        stopDragging()
+      }
+    }
+  }))
 </script>
 
 <div
+  bind:this={el}
   on:mousedown={handleMouseDown}
   class={`draggable${dragging ? ' draggable--dragging' : ''}`}
 >
